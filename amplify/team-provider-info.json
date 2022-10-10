@@ -1,0 +1,21 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-groupchat-dev-141154-authRole",
+      "UnauthRoleArn": "arn:aws:iam::132260253285:role/amplify-groupchat-dev-141154-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::132260253285:role/amplify-groupchat-dev-141154-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-groupchat-dev-141154-deployment",
+      "UnauthRoleName": "amplify-groupchat-dev-141154-unauthRole",
+      "StackName": "amplify-groupchat-dev-141154",
+      "StackId": "arn:aws:cloudformation:us-east-2:132260253285:stack/amplify-groupchat-dev-141154/f7007120-431c-11ed-8387-02c0b78244c8",
+      "AmplifyAppId": "d2r0e9knyg7ogz"
+    },
+    "categories": {
+      "auth": {
+        "groupchat283b5733": {},
+        "true": {}
+      }
+    }
+  }
+}
