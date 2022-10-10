@@ -2,6 +2,14 @@
 
 A new group chat project.
 
+Sample Video 
+
+https://drive.google.com/file/d/1rg-TBl_kyjx8-X2ieafbCrE22qfdMvTr/view?usp=sharing
+
+![alt text](./assets/images/login.png)
+![alt text](./assets/images/sign_up.png)
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
