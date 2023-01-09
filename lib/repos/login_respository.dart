@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:group_chat/repos/create_user_account.dart';
+import 'package:group_chat/screens/create_user_account.dart';
 import 'package:group_chat/repos/profile_repository.dart';
 
 import '../utils/shared_preferences.dart';

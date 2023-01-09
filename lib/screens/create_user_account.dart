@@ -9,8 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 
-import '../screens/home_screen.dart';
-import 'profile_repository.dart';
+import 'home_screen.dart';
+import '../repos/profile_repository.dart';
 
 class CreateUserAccountScreen extends StatefulWidget {
   const CreateUserAccountScreen({required this.email});

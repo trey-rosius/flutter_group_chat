@@ -371,10 +371,10 @@ class HomeScreenState extends State<HomeScreen> {
     final platform = Theme.of(context).platform;
 
     return  Scaffold(
-      backgroundColor: Color(0xFF1e1d2d),
+      backgroundColor: const Color(0xFF1e1d2d),
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text("Chat Screen",style: TextStyle(color: Colors.black),
+        title: const Text("Chat Screen",style: TextStyle(color: Colors.black),
       ),),
 
 

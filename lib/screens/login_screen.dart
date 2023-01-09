@@ -241,6 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                       ),
                                       onPressed: ()=>loginRepo.googleSignIn(context),
+                                      //onPressed: ()=>loginRepo.signOutCurrentUser(),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                         children: [
@@ -261,7 +262,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
 
 
-                              TextButton(onPressed: (){}, child: Text('Forgot you password ?',style: TextStyle(fontWeight: FontWeight.bold,
+                              TextButton(onPressed: (){}, child: Text('Forgot your password ?',style: TextStyle(fontWeight: FontWeight.bold,
                                   color: Theme.of(context).colorScheme.secondary),)),
 
 
