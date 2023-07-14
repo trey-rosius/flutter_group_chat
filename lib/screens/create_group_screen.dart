@@ -85,11 +85,11 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
         return Container(
           child: Semantics(
+              label: 'pick image',
               child: Image.file(
                 File(_imageFile!.path),
                 width: 150,
-              ),
-              label: 'pick image'),
+              )),
         );
 
       }

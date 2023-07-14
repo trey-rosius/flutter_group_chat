@@ -190,6 +190,7 @@ class ProfileRepository extends ChangeNotifier {
 
 
   Future<void> uploadImage(String imageFilePath,String targetPath)async {
+    /*
     var uuid =  const Uuid().v1();
     S3UploadFileOptions  options = S3UploadFileOptions(accessLevel: StorageAccessLevel.guest,);
     try {
@@ -214,6 +215,8 @@ class ProfileRepository extends ChangeNotifier {
       print("error message is" + e.message);
       loading= false;
     }
+
+     */
   }
 
   Future<bool>signOut() async{

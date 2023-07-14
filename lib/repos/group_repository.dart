@@ -180,6 +180,7 @@ class GroupRepository extends ChangeNotifier {
 
 
   Future<void> uploadImage(String imageFilePath,String targetPath)async {
+    /*
     var uuid =  const Uuid().v1();
     S3UploadFileOptions  options = S3UploadFileOptions(accessLevel: StorageAccessLevel.guest,);
     try {
@@ -204,6 +205,8 @@ class GroupRepository extends ChangeNotifier {
       print("error message is" + e.message);
       loading= false;
     }
+
+     */
   }
 
 

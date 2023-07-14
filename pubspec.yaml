@@ -46,15 +46,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  amplify_flutter: ^0.6.8
-  amplify_api: ^0.6.8
-  amplify_auth_cognito: ^0.6.8
+  amplify_flutter: ^1.2.1
+  amplify_api: ^1.2.0
+  amplify_auth_cognito: ^1.2.1
   provider: ^6.0.1
   timeago: ^3.1.0
   cached_network_image: ^3.1.0
   shared_preferences: ^2.0.6
   image_picker: ^0.8.2
-  amplify_storage_s3: ^0.6.8
+  amplify_storage_s3: ^1.2.1
 
   flutter_svg: ^1.1.5
 
@@ -85,16 +85,16 @@ flutter:
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
-  # example:
-  fonts:
-   - family: Montserrat
-     fonts:
-       - asset: assets/fonts/Montserrat.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-   - family: Ultra-Regular
-     fonts:
-       - asset: assets/fonts/Ultra-Regular.ttf
+  # example:  fonts:
+  #   - family: Montserrat
+  #     fonts:
+  #       - asset: assets/fonts/Montserrat.ttf
+  #  #       - asset: fonts/Schyler-Italic.ttf
+  #  #         style: italic
+  #   - family: Ultra-Regular
+  #     fonts:
+  #       - asset: assets/fonts/Ultra-Regular.ttf
+
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
