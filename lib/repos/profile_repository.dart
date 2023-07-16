@@ -12,28 +12,18 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import '../utils/utils.dart';
 
 class ProfileRepository extends ChangeNotifier {
-
   ProfileRepository.instance();
-
-
 
   final usernameController = TextEditingController();
 
-
-
-
-
   S3UploadFileOptions? options;
   bool _loading = false;
-  String _userId='';
-  String _username='';
-  String _email='';
+  String _userId = '';
+  String _username = '';
+  String _email = '';
   bool _logout = false;
 
-
   String get email => _email;
-
-
 
   set email(String value) {
     _email = value;
@@ -46,12 +36,14 @@ class ProfileRepository extends ChangeNotifier {
     _username = value;
     notifyListeners();
   }
+
   bool get logout => _logout;
 
   set logout(bool value) {
     _logout = value;
     notifyListeners();
   }
+
   String get userId => _userId;
 
   set userId(String value) {
@@ -60,8 +52,7 @@ class ProfileRepository extends ChangeNotifier {
   }
 
   String _profilePic = "";
-  String _profilePicKey ="";
-
+  String _profilePicKey = "";
 
   String get profilePicKey => _profilePicKey;
 
@@ -77,7 +68,6 @@ class ProfileRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-
   bool get loading => _loading;
 
   set loading(bool value) {
@@ -85,17 +75,11 @@ class ProfileRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-
- Future<bool> createUserAccount(String email) async {
-
-
-
-
+  Future<bool> createUserAccount(String email) async {
     loading = true;
 
     try {
-      String graphQLDocument =
-      '''
+      String graphQLDocument = '''
       mutation create(
             \$username: String!
             \$email: String!
@@ -118,66 +102,50 @@ class ProfileRepository extends ChangeNotifier {
 
       var operation = Amplify.API.mutate(
           request: GraphQLRequest<String>(
-            document: graphQLDocument,
-            apiName: "cdk-group_chat-api_AMAZON_COGNITO_USER_POOLS",
-            variables: {
-
-              "email":email,
-
-              "profilePicUrl":profilePic,
-              "username":usernameController.text,
-
-            },
-          ));
+        document: graphQLDocument,
+        apiName: "cdk-group_chat-api_AMAZON_COGNITO_USER_POOLS",
+        variables: {
+          "email": email,
+          "profilePicUrl": profilePic,
+          "username": usernameController.text,
+        },
+      ));
 
       var response = await operation.response;
 
       var data = response.data;
-      if(response.data != null){
+      if (response.data != null) {
         if (kDebugMode) {
-          print('Mutation result is' + data!);
+          print('Mutation result is${data!}');
           loading = false;
-
         }
         return true;
-      }else{
-
-        print('Mutation error: ' + response.errors.toString());
+      } else {
+        if (kDebugMode) {
+          print('Mutation error: ${response.errors}');
+        }
         loading = false;
         return false;
       }
-
-
-
-
-
-
-
     } catch (ex) {
-
-      print(ex.toString());
+      if (kDebugMode) {
+        print(ex.toString());
+      }
       loading = false;
       return false;
-
     }
-
-
   }
 
-
-
-  void showInSnackBar(BuildContext context,String value) {
-    ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+  void showInSnackBar(BuildContext context, String value) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         value,
         textAlign: TextAlign.center,
-        style: const TextStyle( fontSize: 20.0),
+        style: const TextStyle(fontSize: 20.0),
       ),
       backgroundColor: Theme.of(context).colorScheme.secondary,
     ));
   }
-
-
 
   @override
   void dispose() {
@@ -185,33 +153,27 @@ class ProfileRepository extends ChangeNotifier {
 
     usernameController.dispose();
 
-
-
     super.dispose();
   }
 
-
-  Future<void> uploadProfilePicture(String imageFilePath,String targetPath) async {
-    var uuid =  const Uuid().v1();
+  Future<void> uploadProfilePicture(
+      String imageFilePath, String targetPath) async {
+    var uuid = const Uuid().v1();
     final awsFile = AWSFilePlatform.fromFile(File(imageFilePath));
     try {
-      final uploadResult =  await Amplify.Storage.uploadFile(
-          key: '$uuid.png',
-          localFile: awsFile,
-
+      final uploadResult = await Amplify.Storage.uploadFile(
+        key: '$uuid.png',
+        localFile: awsFile,
       ).result;
 
-
       safePrint('Uploaded file: ${uploadResult.uploadedItem.key}');
-      profilePicKey  = uploadResult.uploadedItem.key;
+      profilePicKey = uploadResult.uploadedItem.key;
 
-      final resultDownload =
-      await Utils.getDownloadUrl(key: profilePicKey);
+      final resultDownload = await Utils.getDownloadUrl(key: profilePicKey);
       if (kDebugMode) {
         print(resultDownload);
       }
-      profilePic= resultDownload;
-
+      profilePic = resultDownload;
 
       loading = false;
 
@@ -219,40 +181,36 @@ class ProfileRepository extends ChangeNotifier {
         print("Download Url is $resultDownload");
         print("the key is $profilePicKey");
       }
-
-
     } on StorageException catch (e) {
       safePrint("error message is${e.message}");
-      loading= false;
+      loading = false;
       safePrint('Error uploading file: ${e.message}');
       rethrow;
     }
   }
 
-
-  Future<bool>signOut() async{
+  Future<bool> signOut() async {
     try {
       Amplify.Auth.signOut();
       return logout = true;
     } on AuthException catch (e) {
-
       print(e.message);
-      return logout  = false;
+      return logout = false;
     }
   }
 
-  Future<String> retrieveEmail() async{
+  Future<String> retrieveEmail() async {
     var res = await Amplify.Auth.fetchUserAttributes();
     res.forEach((element) {
-      print("element is"+element.value);
+      if (kDebugMode) {
+        print("element is${element.value}");
+      }
     });
     return res[4].value;
   }
-  Future<AuthUser>retrieveCurrentUser() async{
+
+  Future<AuthUser> retrieveCurrentUser() async {
     AuthUser authUser = await Amplify.Auth.getCurrentUser();
     return authUser;
   }
-
-
-
 }

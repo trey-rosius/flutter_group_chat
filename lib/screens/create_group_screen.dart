@@ -14,7 +14,7 @@ import 'home_screen.dart';
 
 
 class CreateGroupScreen extends StatefulWidget {
-  const CreateGroupScreen({required this.email});
+  const CreateGroupScreen({super.key, required this.email});
   final String email;
 
 
