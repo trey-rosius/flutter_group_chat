@@ -227,7 +227,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                 ),
                               ),
-                              Container(
+                              loginRepo.googleLoading ? Container(
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                child: Center(
+                                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
+                                ),
+                              ) : Container(
                                 padding: const EdgeInsets.symmetric(vertical: 10),
                                 child: SizedBox(
                                   width: size.width/1.1,

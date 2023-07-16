@@ -153,12 +153,12 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
       );
 
       var dir = await path_provider.getTemporaryDirectory();
-      var targetPath = dir.absolute.path + "/temp.jpg";
+      var targetPath = "${dir.absolute.path}/temp.jpg";
       setState(() {
         _imageFile = pickedFile;
       });
 
-      await profileRepo.uploadImage(
+      await profileRepo.uploadProfilePicture(
           _imageFile!.path, targetPath);
 
     } catch (e) {
@@ -215,7 +215,7 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                     ? Container(
                     margin: const EdgeInsets.only(top: 20),
                     alignment: Alignment.center,
-                    child: CircularProgressIndicator())
+                    child: const CircularProgressIndicator())
                     : InkWell(
                     onTap: () {
                       _onImageButtonPressed(ImageSource.gallery, context, profileRepo);
@@ -231,7 +231,7 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                           child: ClipOval(
                               child: ClipRRect(
                                   borderRadius:
-                                  new BorderRadius.circular(
+                                   BorderRadius.circular(
                                       30),
                                   child: CachedNetworkImage(
                                       width: 100.0,
@@ -241,7 +241,7 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                                           .profilePic,
                                       placeholder: (context,
                                           url) =>
-                                          CircularProgressIndicator(),
+                                          const CircularProgressIndicator(),
                                       errorWidget: (context,
                                           url, ex) =>
                                           CircleAvatar(

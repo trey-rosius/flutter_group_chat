@@ -6,8 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-
+import 'package:aws_common/vm.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+
+import '../utils/utils.dart';
 
 class GroupRepository extends ChangeNotifier {
 
@@ -21,8 +23,6 @@ class GroupRepository extends ChangeNotifier {
 
 
 
-
-  S3UploadFileOptions? options;
   bool _loading = false;
   String _userId='';
 
@@ -178,43 +178,48 @@ class GroupRepository extends ChangeNotifier {
     super.dispose();
   }
 
-
-  Future<void> uploadImage(String imageFilePath,String targetPath)async {
-    /*
+  Future<void> uploadImage(String imageFilePath,String targetPath) async {
     var uuid =  const Uuid().v1();
-    S3UploadFileOptions  options = S3UploadFileOptions(accessLevel: StorageAccessLevel.guest,);
+    final awsFile = AWSFilePlatform.fromFile(File(imageFilePath));
     try {
-      UploadFileResult result  =  await Amplify.Storage.uploadFile(
-          key: uuid,
-          local: File(imageFilePath),
-          options: options
-      );
-      groupProfilePicKey  = result.key;
+      final uploadResult =  await Amplify.Storage.uploadFile(
+          key: '$uuid.png',
+          localFile: awsFile,
+
+      ).result;
+
+
+      safePrint('Uploaded file: ${uploadResult.uploadedItem.key}');
+      groupProfilePicKey = uploadResult.uploadedItem.key;
+
+      groupProfilePic=
+      await Utils.getDownloadUrl(key: groupProfilePicKey);
       if (kDebugMode) {
-        print("the key is "+groupProfilePicKey);
+        print("group profile pic $groupProfilePic");
       }
-      GetUrlResult resultDownload =
-      await Amplify.Storage.getUrl(key: groupProfilePicKey);
-      if (kDebugMode) {
-        print(resultDownload.url);
-      }
-      groupProfilePic = resultDownload.url;
+
       loading = false;
 
+      if (kDebugMode) {
+        print("the key is $groupProfilePicKey");
+      }
+
+
     } on StorageException catch (e) {
-      print("error message is" + e.message);
+      safePrint("error message is${e.message}");
       loading= false;
+      safePrint('Error uploading file: ${e.message}');
+      rethrow;
     }
-
-     */
   }
-
 
 
   Future<String> retrieveEmail() async{
     var res = await Amplify.Auth.fetchUserAttributes();
     res.forEach((element) {
-      print("element is"+element.value);
+      if (kDebugMode) {
+        print("element is${element.value}");
+      }
     });
     return res[4].value;
   }

@@ -6,8 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-
+import 'package:aws_common/vm.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+
+import '../utils/utils.dart';
 
 class ProfileRepository extends ChangeNotifier {
 
@@ -189,35 +191,44 @@ class ProfileRepository extends ChangeNotifier {
   }
 
 
-  Future<void> uploadImage(String imageFilePath,String targetPath)async {
-    /*
+  Future<void> uploadProfilePicture(String imageFilePath,String targetPath) async {
     var uuid =  const Uuid().v1();
-    S3UploadFileOptions  options = S3UploadFileOptions(accessLevel: StorageAccessLevel.guest,);
+    final awsFile = AWSFilePlatform.fromFile(File(imageFilePath));
     try {
-      UploadFileResult result  =  await Amplify.Storage.uploadFile(
-          key: uuid,
-          local: File(imageFilePath),
-          options: options
-      );
-      profilePicKey  = result.key;
+      final uploadResult =  await Amplify.Storage.uploadFile(
+          key: '$uuid.png',
+          localFile: awsFile,
+
+      ).result;
+
+
+      safePrint('Uploaded file: ${uploadResult.uploadedItem.key}');
+      profilePicKey  = uploadResult.uploadedItem.key;
+
+      final resultDownload =
+      await Utils.getDownloadUrl(key: profilePicKey);
       if (kDebugMode) {
-        print("the key is "+profilePicKey);
+        print(resultDownload);
       }
-      GetUrlResult resultDownload =
-          await Amplify.Storage.getUrl(key: profilePicKey);
-      if (kDebugMode) {
-        print(resultDownload.url);
-      }
-      profilePic = resultDownload.url;
+      profilePic= resultDownload;
+
+
       loading = false;
 
-    } on StorageException catch (e) {
-      print("error message is" + e.message);
-      loading= false;
-    }
+      if (kDebugMode) {
+        print("Download Url is $resultDownload");
+        print("the key is $profilePicKey");
+      }
 
-     */
+
+    } on StorageException catch (e) {
+      safePrint("error message is${e.message}");
+      loading= false;
+      safePrint('Error uploading file: ${e.message}');
+      rethrow;
+    }
   }
+
 
   Future<bool>signOut() async{
     try {

@@ -106,7 +106,9 @@ class LoginRepository extends ChangeNotifier{
         print('key: ${element.userAttributeKey}; value: ${element.value}');
       }
     } on AuthException catch (e) {
-      print(e.message);
+      if (kDebugMode) {
+        print(e.message);
+      }
     }
   }
   Future<void>googleSignIn(BuildContext context) async{
@@ -129,7 +131,9 @@ class LoginRepository extends ChangeNotifier{
 
           for(var item in listUserAttributes){
             if(item.userAttributeKey.key =='email'){
-              print("list user attributes are ${item.value}");
+              if (kDebugMode) {
+                print("list user attributes are ${item.value}");
+              }
               SharedPrefsUtils.instance().saveUserEmail(item.value).then((value) {
 
               });
@@ -140,10 +144,7 @@ class LoginRepository extends ChangeNotifier{
             }
 
           }
-/*
-          print("usersub and email are"+userSub+" " + email);
 
-*/
         });
 
 
@@ -153,7 +154,9 @@ class LoginRepository extends ChangeNotifier{
       }
 
     } on AmplifyException catch (e) {
-      print(e.message);
+      if (kDebugMode) {
+        print(e.message);
+      }
       googleLoading = false;
     }
 

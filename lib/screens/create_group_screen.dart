@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../repos/group_repository.dart';
 import 'home_screen.dart';
-import '../repos/profile_repository.dart';
+
 
 class CreateGroupScreen extends StatefulWidget {
   const CreateGroupScreen({required this.email});
@@ -83,19 +83,19 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
       } else {
 
-        return Container(
-          child: Semantics(
-              label: 'pick image',
-              child: Image.file(
-                File(_imageFile!.path),
-                width: 150,
-              )),
-        );
+        return Semantics(
+            label: 'pick image',
+            child: Image.file(
+              File(_imageFile!.path),
+              width: 150,
+            ));
 
       }
     } else if (_pickImageError != null) {
 
-      print("error occured during image pick");
+      if (kDebugMode) {
+        print("error occured during image pick");
+      }
 
       return InkWell(
         onTap: () {
@@ -103,7 +103,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         },
         child: Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Icon(
               Icons.account_circle,
               size: 100,
@@ -154,7 +154,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
       );
 
       var dir = await path_provider.getTemporaryDirectory();
-      var targetPath = dir.absolute.path + "/temp.jpg";
+      var targetPath = "${dir.absolute.path}/temp.jpg";
       setState(() {
         _imageFile = pickedFile;
       });
