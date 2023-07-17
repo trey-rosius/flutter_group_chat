@@ -1,29 +1,16 @@
-import 'dart:convert';
+
 import 'dart:ui';
-
-
-
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:group_chat/screens/left_chat_screen.dart';
-import 'package:group_chat/screens/right_chat_screen.dart';
-import 'package:group_chat/screens/typing_indicator.dart';
-
-import 'package:image_picker/image_picker.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'dart:async';
-
-
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../repos/group_repository.dart';
+import '../utils/shared_preferences.dart';
+import 'create_group_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen(this.email);
-  final String email;
+
+
 
 
 
@@ -36,12 +23,15 @@ class HomeScreenState extends State<HomeScreen> {
 
   bool update = false;
   String chatId="";
-
+  late String? username;
 
 
   @override
   void initState() {
     super.initState();
+    var sharedPrefs = context.read<SharedPrefsUtils>();
+    sharedPrefs.getUserId().then((value) => username = value);
+
 
 
 
@@ -73,19 +63,69 @@ class HomeScreenState extends State<HomeScreen> {
 
 
     return  Scaffold(
-      backgroundColor: const Color(0xFF1e1d2d),
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: const Text("Chat Screen",style: TextStyle(color: Colors.black),
-      ),),
 
 
-        body:  const Column(
-          children: <Widget>[
 
+
+        body:  Stack(
+          children: [
+          SizedBox(
+
+          height: size.height,
+          width: size.width,
+          child: Image.asset('assets/images/bg.jpeg',fit: BoxFit.cover,)),
+
+             Container(
+
+
+                height:  size.height,
+
+                width: size.width,
+                decoration: BoxDecoration(
+
+                  color: Colors.black.withOpacity(0.1),
+
+                ),
+                child: ClipRect(
+                    child: BackdropFilter(
+
+
+                        filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                        child:   const Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+
+
+
+                            ],
+                          ),
+
+
+
+
+                        )),
+              ),
 
           ],
-        )
+        ),
+
+            floatingActionButton: FloatingActionButton(
+
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return MultiProvider(providers: [
+                      ChangeNotifierProvider(create: (_) => GroupRepository.instance()),
+
+                  ], child:CreateGroupScreen( username: username!,));
+
+                }));
+
+    },
+            child: const Icon(Icons.group_add),
+
+    ),
     );
 
 

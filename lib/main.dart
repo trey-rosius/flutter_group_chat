@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:group_chat/repos/group_repository.dart';
 import 'package:group_chat/screens/create_group_screen.dart';
@@ -46,7 +47,9 @@ class _MyAppState extends State<MyApp> {
 
 
     } catch(e) {
-      print('an error occured during amplify configuration: $e');
+      if (kDebugMode) {
+        print('an error occured during amplify configuration: $e');
+      }
 
 
 

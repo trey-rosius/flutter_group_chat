@@ -103,7 +103,6 @@ class LoginRepository extends ChangeNotifier{
       var res = await Amplify.Auth.fetchUserAttributes();
       for (var element in res) {
 
-        print('key: ${element.userAttributeKey}; value: ${element.value}');
       }
     } on AuthException catch (e) {
       if (kDebugMode) {
@@ -134,9 +133,11 @@ class LoginRepository extends ChangeNotifier{
               if (kDebugMode) {
                 print("list user attributes are ${item.value}");
               }
-              SharedPrefsUtils.instance().saveUserEmail(item.value).then((value) {
+              SharedPrefsUtils.instance().saveUserEmail(item.value).then((value){
+                if (kDebugMode) {
+                  print('email address saved');
 
-              });
+                }});
               Navigator.push(context, MaterialPageRoute(builder: (context)=> ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),
                   child:CreateUserAccountScreen(email: item.value,))));
 
@@ -168,7 +169,6 @@ class LoginRepository extends ChangeNotifier{
     try {
       await Amplify.Auth.signOut();
     } on AuthException catch (e) {
-      print(e.message);
     }
   }
 

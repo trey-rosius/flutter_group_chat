@@ -5,17 +5,19 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 
 import '../repos/group_repository.dart';
+import '../utils/shared_preferences.dart';
 import 'home_screen.dart';
 
 
 class CreateGroupScreen extends StatefulWidget {
-  const CreateGroupScreen({super.key, required this.email});
-  final String email;
+  CreateGroupScreen({required this.username});
+  final String username;
 
 
 
@@ -30,6 +32,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
   final ImagePicker _picker = ImagePicker();
   File? file;
+  bool denySpaces = true;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey =  GlobalKey<ScaffoldState>();
@@ -105,7 +108,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
             alignment: Alignment.center,
             padding: const EdgeInsets.all(10.0),
             child: Icon(
-              Icons.account_circle,
+              Icons.group,
               size: 100,
               color: Theme.of(context).primaryColor,
             )),
@@ -122,7 +125,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.all(10.0),
             child: Icon(
-              Icons.account_circle,
+              Icons.group,
               size: 150,
               color: Theme.of(context).primaryColor,
             )),
@@ -159,7 +162,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         _imageFile = pickedFile;
       });
 
-      await groupRepo.uploadImage(
+      await groupRepo.uploadGroupProfilePic(
           _imageFile!.path, targetPath);
 
     } catch (e) {
@@ -194,6 +197,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var groupRepo = context.watch<GroupRepository>();
+
 
     return Scaffold(
         key: _scaffoldKey,
@@ -299,6 +303,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
                             controller: groupRepo.nameController,
                             style: const TextStyle(color: Colors.black),
+
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -401,9 +406,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
 
 
-
-
-                                    groupRepo.createGroup(widget.email).then((bool value){
+                                    groupRepo.createGroup(widget.username).then((bool value){
 
                                       if(value){
 
@@ -415,7 +418,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                               //   ChangeNotifierProvider(create: (_) => SharedPrefsUtils.instance(),),
 
                                             ],
-                                            child: HomeScreen(widget.email),
+                                            child: HomeScreen(),
 
                                           );
 

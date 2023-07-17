@@ -40,7 +40,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
   String chatId="";
 
   final ImagePicker _picker = ImagePicker();
-  late SharedPreferences prefs;
+
   FocusNode? myFocusNode;
   XFile? imageFile;
   File? audioFile;

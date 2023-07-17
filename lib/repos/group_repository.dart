@@ -69,9 +69,9 @@ class GroupRepository extends ChangeNotifier {
   }
 
 
-  Future<bool> createGroup(String email) async {
+  Future<bool> createGroup(String username) async {
 
-
+  print("username is $username");
 
 
     loading = true;
@@ -107,7 +107,7 @@ class GroupRepository extends ChangeNotifier {
             apiName: "cdk-group_chat-api_AMAZON_COGNITO_USER_POOLS",
             variables: {
 
-              "userId":userId,
+              "userId":username,
 
 
               "groupProfilePicUrl":groupProfilePic,
@@ -122,14 +122,16 @@ class GroupRepository extends ChangeNotifier {
       var data = response.data;
       if(response.data != null){
         if (kDebugMode) {
-          print('Mutation result is' + data!);
+          print('Mutation result is${data!}');
           loading = false;
 
         }
         return true;
       }else{
 
-        print('Mutation error: ' + response.errors.toString());
+        if (kDebugMode) {
+          print('Mutation error: ${response.errors}');
+        }
         loading = false;
         return false;
       }
@@ -178,7 +180,7 @@ class GroupRepository extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> uploadImage(String imageFilePath,String targetPath) async {
+  Future<void> uploadGroupProfilePic(String imageFilePath,String targetPath) async {
     var uuid =  const Uuid().v1();
     final awsFile = AWSFilePlatform.fromFile(File(imageFilePath));
     try {

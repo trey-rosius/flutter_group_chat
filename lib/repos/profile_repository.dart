@@ -9,6 +9,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:aws_common/vm.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
+import '../utils/shared_preferences.dart';
 import '../utils/utils.dart';
 
 class ProfileRepository extends ChangeNotifier {
@@ -76,6 +77,8 @@ class ProfileRepository extends ChangeNotifier {
   }
 
   Future<bool> createUserAccount(String email) async {
+
+    print("email is $email");
     loading = true;
 
     try {
@@ -85,16 +88,16 @@ class ProfileRepository extends ChangeNotifier {
             \$email: String!
     
             
-            \$profilePicUrl:String!
+            \$profilePicKey:String!
            ) {
   createUserAccount(input: {
 
  email: \$email, 
 
-  profilePicUrl: \$profilePicUrl, username: \$username}) {
+  profilePicKey: \$profilePicKey, username: \$username}) {
     email
     id
-    profilePicUrl
+    profilePicKey
     username
   }
 }
@@ -106,7 +109,7 @@ class ProfileRepository extends ChangeNotifier {
         apiName: "cdk-group_chat-api_AMAZON_COGNITO_USER_POOLS",
         variables: {
           "email": email,
-          "profilePicUrl": profilePic,
+          "profilePicKey": profilePicKey,
           "username": usernameController.text,
         },
       ));
@@ -115,6 +118,13 @@ class ProfileRepository extends ChangeNotifier {
 
       var data = response.data;
       if (response.data != null) {
+
+        SharedPrefsUtils.instance().saveUsername(usernameController.text).then((value){
+          if (kDebugMode) {
+            print('username saved');
+
+          }});
+
         if (kDebugMode) {
           print('Mutation result is${data!}');
           loading = false;
@@ -124,6 +134,7 @@ class ProfileRepository extends ChangeNotifier {
         if (kDebugMode) {
           print('Mutation error: ${response.errors}');
         }
+       // showInSnackBar(BuildContext context, String value)
         loading = false;
         return false;
       }

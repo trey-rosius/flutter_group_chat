@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgPicture.asset('assets/images/convos.svg',height: 50,width: 50,color: Colors.white,),
-                  Text("Convos",style: TextStyle(fontFamily: 'Ultra-Regular',
+                  const Text("Convos",style: TextStyle(fontFamily: 'Ultra-Regular',
                       fontSize: 40,color: Colors.white),),
                 ],
               ),
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.bottomCenter,
               child: Container(
 
-                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+                margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
                 height:  size.height/1.6,
 
                 width: size.width,
@@ -194,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
 
                               Container(
-                                child: Row(
+                                child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('or',style: TextStyle(fontWeight: FontWeight.bold),),
