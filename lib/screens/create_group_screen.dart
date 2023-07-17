@@ -11,7 +11,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 
 import '../repos/group_repository.dart';
-import '../utils/shared_preferences.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'home_screen.dart';
 
 
@@ -71,7 +71,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         // Why network?
         // See https://pub.dev/packages/image_picker#getting-ready-for-the-web-platform
 
-        return Container(
+        return SizedBox(
           height: 60,
           width: 60,
           child: ClipRRect(
@@ -107,11 +107,27 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         child: Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.all(10.0),
-            child: Icon(
-              Icons.group,
-              size: 100,
-              color: Theme.of(context).primaryColor,
-            )),
+
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  const Color(0xFFfa709a),
+                  Theme.of(context).primaryColor
+                  // Color(0XFFfee140)
+
+                ],
+              ),
+
+
+              shape: BoxShape.circle
+
+          ),
+
+            child:  SvgPicture.asset('assets/images/group_chat_profile.svg',height: 90,width: 90,color: Colors.white,),),
       );
 
     } else {
@@ -121,14 +137,53 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         onTap: () {
           _onImageButtonPressed(ImageSource.gallery, context, groupRepo);
         },
-        child: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(10.0),
-            child: Icon(
-              Icons.group,
-              size: 150,
-              color: Theme.of(context).primaryColor,
-            )),
+        child: Stack(
+          alignment: Alignment.bottomRight,
+
+          children: [
+            Container(
+                alignment: Alignment.center,
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Color(0xFFfa709a),
+                       Theme.of(context).primaryColor
+                       // Color(0XFFfee140)
+
+                      ],
+                    ),
+
+
+                  shape: BoxShape.circle
+
+                ),
+                padding: const EdgeInsets.all(10.0),
+                child:
+                    SvgPicture.asset('assets/images/group_chat_profile.svg',height: 90,width: 90,color: Colors.white,),
+
+
+
+                ),
+            Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                width: 40,
+                height: 40,
+
+                decoration: const BoxDecoration(
+                   color: Colors.white,
+
+
+                    shape: BoxShape.circle
+
+                ),
+                child: const Icon(Icons.camera_alt,color: Colors.black,)),
+          ],
+        ),
+
       );
     }
   }
@@ -203,254 +258,428 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         key: _scaffoldKey,
 
 
-        body: Stack(
-          alignment: Alignment.center,
-          children: [
-            SizedBox(
+        body: SingleChildScrollView(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
 
-              height: size.height,
-              width: size.width,
-              child: Image.asset('assets/images/bg.jpeg',fit: BoxFit.cover,),
+                height: size.height,
+                width: size.width,
+                child: Image.asset('assets/images/bg.jpeg',fit: BoxFit.cover,),
 
 
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: SafeArea(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(onPressed: (){
-                      Navigator.of(context).pop();
-                    }, icon: Icon(Icons.arrow_back)),
-
-                  ],
-                ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  groupRepo.loading
-                      ? Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator())
-                      : InkWell(
-                      onTap: () {
-                        _onImageButtonPressed(ImageSource.gallery, context, groupRepo);
-                      },
-                      child: groupRepo.groupProfilePic.isEmpty
-                          ?
-                      _previewImage(groupRepo, context)
+             Container(
+               height:  size.height,
 
-                          : Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: ClipOval(
-                                child: ClipRRect(
-                                    borderRadius:
-                                    new BorderRadius.circular(
-                                        30),
-                                    child: CachedNetworkImage(
-                                        width: 100.0,
-                                        height: 100.0,
-                                        fit: BoxFit.cover,
-                                        imageUrl: groupRepo
-                                            .groupProfilePic,
-                                        placeholder: (context,
-                                            url) =>
-                                            CircularProgressIndicator(),
-                                        errorWidget: (context,
-                                            url, ex) =>
-                                            CircleAvatar(
-                                              backgroundColor:
-                                              Theme.of(
-                                                  context)
-                                                  .colorScheme.secondary,
-                                              radius: 40.0,
-                                              child: const Icon(
-                                                Icons
-                                                    .account_circle,
-                                                color:
-                                                Colors.white,
-                                                size: 40.0,
-                                              ),
-                                            )))),
-                          ))
+               width: size.width,
+               decoration: BoxDecoration(
 
-                    // child: _prev,
+                 color: Colors.black.withOpacity(0.1),
 
-                  ),
-                  Form(
-                    key: formKey,
-                    autovalidateMode: AutovalidateMode.always,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+               ),
+               child: ClipRect(
+                 child: BackdropFilter(
+                   filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                   child: Column(
+                     children: [
+                       Align(
+                         alignment: Alignment.topCenter,
+                         child: SafeArea(
+                           child: Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                             children: [
+                               Container(
+                                 height:50,
+                                 width: 50,
+                                 margin: const EdgeInsets.only(left: 10,top: 10),
+                                 decoration: BoxDecoration(
+                                     gradient: LinearGradient(
+                                       begin: Alignment.topRight,
+                                       end: Alignment.bottomLeft,
+                                       colors: [
+                                         const Color(0xFFfa709a),
+                                         Theme.of(context).primaryColor
+                                         // Color(0XFFfee140)
+
+                                       ],
+                                     ),
 
 
+                                     shape: BoxShape.circle
 
-                        Container(
+                                 ),
+                                 child: IconButton(onPressed: (){
+                                   Navigator.of(context).pop();
+                                 }, icon: const Icon(Icons.arrow_back)),
+                               ),
 
-                          margin: const EdgeInsets.only(top: 20),
-                          child: TextFormField(
+                             ],
+                           ),
+                         ),
+                       ),
+                       Container(
+                         padding: const EdgeInsets.symmetric(horizontal: 20),
+                         child: Column(
+                           mainAxisAlignment: MainAxisAlignment.center,
+                           crossAxisAlignment: CrossAxisAlignment.center,
+                           children: <Widget>[
+                           Container(
+                             padding: EdgeInsets.only(top: 40),
+                             child:
 
-                            controller: groupRepo.nameController,
-                            style: const TextStyle(color: Colors.black),
+                                Container(
+                                     padding: EdgeInsets.only(left: 20),
+                                     child: Form(
+                                       key: formKey,
+                                       autovalidateMode: AutovalidateMode.always,
+                                       child:Column(
+                                         children: [
+                                           Row(
+                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                             children: [
+                                               groupRepo.loading
+                                                   ? Container(
+                                                   margin: const EdgeInsets.only(top: 20),
+                                                   alignment: Alignment.center,
+                                                   child: const CircularProgressIndicator())
+                                                   : InkWell(
+                                                   onTap: () {
+                                                     _onImageButtonPressed(ImageSource.gallery, context, groupRepo);
+                                                   },
+                                                   child: groupRepo.groupProfilePic.isEmpty
+                                                       ?
+                                                   _previewImage(groupRepo, context)
 
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              filled: true,
+                                                       : Padding(
+                                                       padding: const EdgeInsets.all(10.0),
+                                                       child: Container(
+                                                         alignment: Alignment.center,
+                                                         child: ClipOval(
+                                                             child: ClipRRect(
+                                                                 borderRadius:
+                                                                 BorderRadius.circular(
+                                                                     30),
+                                                                 child: CachedNetworkImage(
+                                                                     width: 100.0,
+                                                                     height: 100.0,
+                                                                     fit: BoxFit.cover,
+                                                                     imageUrl: groupRepo
+                                                                         .groupProfilePic,
+                                                                     placeholder: (context,
+                                                                         url) =>
+                                                                     const CircularProgressIndicator(),
+                                                                     errorWidget: (context,
+                                                                         url, ex) =>
+                                                                         CircleAvatar(
+                                                                           backgroundColor:
+                                                                           Theme.of(
+                                                                               context)
+                                                                               .colorScheme.secondary,
+                                                                           radius: 40.0,
+                                                                           child: const Icon(
+                                                                             Icons
+                                                                                 .account_circle,
+                                                                             color:
+                                                                             Colors.white,
+                                                                             size: 40.0,
+                                                                           ),
+                                                                         )))),
+                                                       ))
 
-                              border: OutlineInputBorder(
+                                                 // child: _prev,
 
-                                borderSide: BorderSide(color: (Colors.grey[700])!, width: 2),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
+                                               ),
+                                               Flexible(
+                                                 flex: 3,
+                                                 child: Container(
+                                                   padding: EdgeInsets.only(left: 10),
+                                                   child: TextFormField(
 
-                                borderSide: BorderSide(color: (Colors.grey[700])!, width: 2),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: (Colors.grey[700])!, width: 2),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              labelText: 'Group Name',
+                                                     controller: groupRepo.nameController,
+                                                     style: const TextStyle(color: Colors.black),
 
-                              labelStyle: TextStyle(color: Colors.black),
-                              hintText: "Group Name",
-                              hintStyle: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Group Name';
-                              }
-                              return null;
-                            },
-                          ),
-
-                        ),
-
-
-
-
-
-                      ],
-                    ),
-                  ),
-
-
-
-
-                  Container(
-                    margin:const EdgeInsets.only(bottom: 20),
-                    child: Column(
-                      children: <Widget>[
-                        groupRepo.loading? Container(
-                          padding: const EdgeInsets.only(top: 30.0),
-
-                          child: const CircularProgressIndicator(),
-                        ) :
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: SizedBox(
-                            width: size.width/1.1,
-                            height:50,
-
-                            child: ElevatedButton(
-
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
-                                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
-
-                                ),
-                                onPressed: (){
-
-
-                                  final FormState form = formKey.currentState!;
-                                  if (!form.validate()) {
-
-                                  } else {
-                                    form.save();
+                                                     decoration: InputDecoration(
 
 
+                                                       border: OutlineInputBorder(
+
+                                                         borderSide: BorderSide(color: Theme.of(context).primaryColor,),
+                                                         borderRadius: const BorderRadius.all(
+                                                           Radius.circular(10),
+                                                         ),
+                                                       ),
+                                                       enabledBorder: OutlineInputBorder(
+
+                                                         borderSide: BorderSide(color: Theme.of(context).primaryColor, ),
+                                                         borderRadius: BorderRadius.all(
+                                                           Radius.circular(10),
+                                                         ),
+
+                                                       ),
+                                                       focusedErrorBorder: OutlineInputBorder(
+
+                                                         borderSide: BorderSide(color: Theme.of(context).primaryColor, ),
+                                                         borderRadius: BorderRadius.all(
+                                                           Radius.circular(10),
+                                                         ),
+
+                                                       ),
+                                                       focusedBorder: OutlineInputBorder(
+                                                         borderSide: BorderSide(color: Theme.of(context).primaryColor,),
+                                                         borderRadius: const BorderRadius.all(
+                                                           Radius.circular(10),
+                                                         ),
+                                                       ),
+                                                       disabledBorder: OutlineInputBorder(
+                                                         borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                                                         borderRadius: const BorderRadius.all(
+                                                           Radius.circular(10),
+                                                         ),
+                                                       ),
+                                                       labelText: 'Group Name',
+                                                       errorStyle: TextStyle(color: Theme.of(context).primaryColor),
+
+                                                       labelStyle: TextStyle(color: Colors.black),
+                                                       hintText: "Group Name",
+                                                       hintStyle: const TextStyle(
+                                                         color: Colors.white,
 
 
-                                    if (kDebugMode) {
-                                      print(groupRepo.groupProfilePic);
-
-                                    }
-
-
-
-                                    groupRepo.createGroup(widget.username).then((bool value){
-
-                                      if(value){
-
-                                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                                          return MultiProvider(
-                                            providers: [
-                                              ChangeNotifierProvider(create: (_) => GroupRepository.instance(),),
-                                              //   ChangeNotifierProvider(create: (_) => PostRepository.instance(),),
-                                              //   ChangeNotifierProvider(create: (_) => SharedPrefsUtils.instance(),),
-
-                                            ],
-                                            child: HomeScreen(),
-
-                                          );
+                                                       ),
+                                                     ),
+                                                     validator: (value) {
+                                                       if (value == null || value.isEmpty) {
+                                                         return 'Group Name';
+                                                       }
+                                                       return null;
+                                                     },
+                                                   ),
+                                                 ),
+                                               ),
+                                             ],
+                                           ),
+                                           Container(
+                                             padding: EdgeInsets.only(top: 20),
 
 
-                                        }));
+                                             child: TextFormField(
+
+                                               controller: groupRepo.descriptionController,
+                                               style: const TextStyle(color: Colors.black),
+                                               maxLines: 5,
+
+                                               decoration: InputDecoration(
 
 
-                                      }else{
-                                        print('an error occured');
-                                      }
+                                                 border: OutlineInputBorder(
+
+                                                   borderSide: BorderSide(color: Theme.of(context).primaryColor,),
+                                                   borderRadius: const BorderRadius.all(
+                                                     Radius.circular(10),
+                                                   ),
+                                                 ),
+                                                 enabledBorder: OutlineInputBorder(
+
+                                                   borderSide: BorderSide(color: Theme.of(context).primaryColor, ),
+                                                   borderRadius: const BorderRadius.all(
+                                                     Radius.circular(10),
+                                                   ),
+
+                                                 ),
+                                                 focusedErrorBorder: OutlineInputBorder(
+
+                                                   borderSide: BorderSide(color: Theme.of(context).primaryColor, ),
+                                                   borderRadius: BorderRadius.all(
+                                                     Radius.circular(10),
+                                                   ),
+
+                                                 ),
+                                                 focusedBorder: OutlineInputBorder(
+                                                   borderSide: BorderSide(color: Theme.of(context).primaryColor,),
+                                                   borderRadius: const BorderRadius.all(
+                                                     Radius.circular(10),
+                                                   ),
+                                                 ),
+                                                 disabledBorder: OutlineInputBorder(
+                                                   borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                                                   borderRadius: const BorderRadius.all(
+                                                     Radius.circular(10),
+                                                   ),
+                                                 ),
+                                                 labelText: 'Description',
+                                                 errorStyle: TextStyle(color: Theme.of(context).primaryColor),
+
+                                                 labelStyle: TextStyle(color: Colors.black),
+                                                 hintText: "Description",
+                                                 hintStyle: const TextStyle(
+                                                   color: Colors.white,
+
+
+                                                 ),
+                                               ),
+                                               validator: (value) {
+                                                 if (value == null || value.isEmpty) {
+                                                   return 'Group Name';
+                                                 }
+                                                 return null;
+                                               },
+                                             ),
+
+                                           ),
+                                         ],
+                                       )
 
 
 
-                                    });
 
 
 
 
-                                  }
 
-                                }, child: const Text('Continue',style: TextStyle(fontWeight:FontWeight.bold, color: Colors.black),)),
-                          ),
-                        )
 
-                      ],
-                    ),
-                  )
+                                     ),
+                                   ),
 
-                ],
-              ),
-            ),
-          ],
+
+                           ),
+
+
+
+                     InkWell(
+                       onTap: () {
+
+                       },
+                       child: Stack(
+                         alignment: Alignment.topRight,
+
+                         children: [
+                           Container(
+                             alignment: Alignment.center,
+                             width: 60,
+                             height: 60,
+                             decoration: BoxDecoration(
+                                 gradient: LinearGradient(
+                                   begin: Alignment.topRight,
+                                   end: Alignment.bottomLeft,
+                                   colors: [
+                                     const Color(0xFFfa709a),
+                                     Theme.of(context).primaryColor
+                                     // Color(0XFFfee140)
+
+                                   ],
+                                 ),
+
+
+                                 shape: BoxShape.circle
+
+                             ),
+                             padding: const EdgeInsets.all(10.0),
+                             child:const Icon(Icons.account_circle,size: 40,color: Colors.white,),
+
+
+
+                           ),
+                           const Icon(Icons.add_circle_outline_outlined,color: Colors.white),
+                         ],
+                       ),
+
+                     ),
+
+
+                             Container(
+                               margin:const EdgeInsets.only(bottom: 20),
+                               child: Column(
+                                 children: <Widget>[
+                                   groupRepo.loading? Container(
+                                     padding: const EdgeInsets.only(top: 30.0),
+
+                                     child: const CircularProgressIndicator(),
+                                   ) :
+                                   Container(
+                                     padding: const EdgeInsets.symmetric(vertical: 20),
+                                     child: SizedBox(
+                                       width: size.width/1.1,
+                                       height:50,
+
+                                       child: ElevatedButton(
+
+                                           style: ButtonStyle(
+                                               backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
+                                               shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
+
+                                           ),
+                                           onPressed: (){
+
+
+                                             final FormState form = formKey.currentState!;
+                                             if (!form.validate()) {
+
+                                             } else {
+                                               form.save();
+
+
+
+
+                                               if (kDebugMode) {
+                                                 print(groupRepo.groupProfilePic);
+
+                                               }
+
+
+
+                                               groupRepo.createGroup(widget.username).then((bool value){
+
+                                                 if(value){
+
+                                                   Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                     return MultiProvider(
+                                                       providers: [
+                                                         ChangeNotifierProvider(create: (_) => GroupRepository.instance(),),
+                                                         //   ChangeNotifierProvider(create: (_) => PostRepository.instance(),),
+                                                         //   ChangeNotifierProvider(create: (_) => SharedPrefsUtils.instance(),),
+
+                                                       ],
+                                                       child: HomeScreen(),
+
+                                                     );
+
+
+                                                   }));
+
+
+                                                 }else{
+                                                   print('an error occured');
+                                                 }
+
+
+
+                                               });
+
+
+
+
+                                             }
+
+                                           }, child: const Text('Continue',style: TextStyle(fontWeight:FontWeight.bold, color: Colors.black),)),
+                                     ),
+                                   )
+
+                                 ],
+                               ),
+                             )
+
+                           ],
+                         ),
+                       ),
+                     ],
+                   ),
+                 ),
+               ),
+             )
+            ],
+          ),
         )
 
     );

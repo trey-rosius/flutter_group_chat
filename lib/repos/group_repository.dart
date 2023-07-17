@@ -194,8 +194,7 @@ class GroupRepository extends ChangeNotifier {
       safePrint('Uploaded file: ${uploadResult.uploadedItem.key}');
       groupProfilePicKey = uploadResult.uploadedItem.key;
 
-      groupProfilePic=
-      await Utils.getDownloadUrl(key: groupProfilePicKey);
+      groupProfilePic= await Utils.getDownloadUrl(key: groupProfilePicKey);
       if (kDebugMode) {
         print("group profile pic $groupProfilePic");
       }
