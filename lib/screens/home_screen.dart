@@ -9,7 +9,7 @@ import '../repos/group_repository.dart';
 import '../utils/shared_preferences.dart';
 import 'create_group_screen.dart';
 import 'login_screen.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -152,12 +152,75 @@ class HomeScreenState extends State<HomeScreen> {
          child:Expanded(
            child: GridView.builder(
              shrinkWrap: true,
+
+             gridDelegate: SliverWovenGridDelegate.count(
+               crossAxisCount: 2,
+               mainAxisSpacing: 8,
+               crossAxisSpacing: 8,
+               pattern: [
+                 const WovenGridTile(1),
+                 const WovenGridTile(
+                   5 / 7,
+                   crossAxisRatio: 0.9,
+                   alignment: AlignmentDirectional.centerEnd,
+                 ),
+               ],
+             ),
+             itemCount: value.getAllGroupsCreatedByUser!.items!.length,
+/*
+             childrenDelegate: SliverChildBuilderDelegate(
+
+                   (context, index) => Text(value.getAllGroupsCreatedByUser!.items![index].name!),
+             ),
+             */
+
+             itemBuilder: (BuildContext context, int index) {
+               return Container(
+                 padding: const EdgeInsets.all(10),
+                 color: Colors.white,
+                 child: Column(
+                   children: [
+                     CachedNetworkImage(
+                         width: 50.0,
+                         height: 50.0,
+                         fit: BoxFit.cover,
+                         imageUrl: value.getAllGroupsCreatedByUser!.items![index].groupProfilePicKey!,
+                         placeholder: (context,
+                             url) =>
+                         const CircularProgressIndicator(),
+                         errorWidget: (context,
+                             url, ex) =>
+                             CircleAvatar(
+                               backgroundColor:
+                               Theme.of(
+                                   context)
+                                   .colorScheme.secondary,
+                               radius: 40.0,
+                               child: const Icon(
+                                 Icons
+                                     .account_circle,
+                                 color:
+                                 Colors.white,
+                                 size: 40.0,
+                               ),
+                             )),
+                     Text(value.getAllGroupsCreatedByUser!.items![index].name!),
+                     Text(value.getAllGroupsCreatedByUser!.items![index].description!)
+                   ],
+                 ),
+               );
+           },
+           )
+           /*
+           GridView.builder(
+             shrinkWrap: true,
              itemCount: value.getAllGroupsCreatedByUser!.items!.length,
                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                      crossAxisCount: 2,),
                itemBuilder: (BuildContext context, int index ){
                return Text(value.getAllGroupsCreatedByUser!.items![index].name!);
                }),
+           */
          )
        );
     }))
