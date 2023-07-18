@@ -140,7 +140,9 @@ class GroupChatScreenState extends State<GroupChatScreen> {
         return true;
       }else{
 
-        print('Mutation error: ' + response.errors.toString());
+        if (kDebugMode) {
+          print('Mutation error: ${response.errors}');
+        }
 
         return false;
       }
@@ -212,14 +214,16 @@ class GroupChatScreenState extends State<GroupChatScreen> {
       var data = response.data;
       if(response.data != null){
         if (kDebugMode) {
-          print('Mutation result is' + data!);
+          print('Mutation result is${data!}');
 
 
         }
         return true;
       }else{
 
-        print('Mutation error: ' + response.errors.toString());
+        if (kDebugMode) {
+          print('Mutation error: ${response.errors}');
+        }
 
         return false;
       }

@@ -6,6 +6,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:group_chat/models/user_profile.dart';
+import 'package:group_chat/repos/profile_repository.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
@@ -316,6 +318,29 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                    Navigator.of(context).pop();
                                  }, icon: const Icon(Icons.arrow_back)),
                                ),
+                               Container(
+
+
+                                 padding: const EdgeInsets.symmetric(horizontal: 20,vertical:10 ),
+                                 decoration: BoxDecoration(
+                                     gradient: LinearGradient(
+                                       begin: Alignment.topRight,
+                                       end: Alignment.bottomLeft,
+                                       colors: [
+                                         const Color(0xFFfa709a),
+                                         Theme.of(context).primaryColor
+                                         // Color(0XFFfee140)
+
+                                       ],
+                                     ),
+
+
+                                     shape: BoxShape.rectangle
+
+                                 ),
+                                 child:Text("Create Group"),
+                               ),
+
 
                              ],
                            ),
@@ -558,13 +583,13 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                          child: Row(
                            children: [
                              Stack(
-                               alignment: Alignment.topRight,
+                               alignment: Alignment.center,
 
                                children: [
                                  Container(
                                    alignment: Alignment.center,
-                                   width: 60,
-                                   height: 60,
+                                   width: 40,
+                                   height: 40,
                                    decoration: BoxDecoration(
                                        gradient: LinearGradient(
                                          begin: Alignment.topRight,
@@ -581,13 +606,13 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                        shape: BoxShape.circle
 
                                    ),
-                                   padding: const EdgeInsets.all(10.0),
-                                   child:const Icon(Icons.account_circle,size: 40,color: Colors.white,),
+
+                                   child:const Icon(Icons.account_circle,size: 30,color: Colors.white,),
 
 
 
                                  ),
-                                 const Icon(Icons.add_circle_outline_outlined,color: Colors.white),
+                                 const Icon(Icons.add_circle_outline_outlined,color: Colors.red,size: 20,),
                                ],
                              ),
                              Container(
@@ -600,6 +625,67 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                        ),
 
                      ),
+
+                             FutureProvider<UserProfileModel?>.value(value: ProfileRepository.instance().getUserProfiles(),
+                               initialData:null,
+                             catchError: (context,error){
+
+                               throw error!;
+                             },
+                             child: Consumer(builder: (BuildContext context, UserProfileModel? value, Widget? child) {
+                              return value == null ? const Center(child: CircularProgressIndicator(),) :
+                              GridView.builder(
+                                 shrinkWrap: true,
+                                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5,
+
+
+                               ), itemBuilder: (BuildContext context,int index){
+                                 return Stack(
+                                   alignment: Alignment.topRight,
+                                   children: [
+                                     Container(
+                                       padding: const EdgeInsets.all(10.0),
+                                       child: ClipOval(
+                                           child: ClipRRect(
+                                               borderRadius:
+                                               BorderRadius.circular(
+                                                   100),
+                                               child: CachedNetworkImage(
+                                                   width: 50.0,
+                                                   height: 50.0,
+                                                   fit: BoxFit.cover,
+                                                   imageUrl: value.getAllUserAccounts!.items![index].profilePicKey!,
+                                                   placeholder: (context,
+                                                       url) =>
+                                                   const CircularProgressIndicator(),
+                                                   errorWidget: (context,
+                                                       url, ex) =>
+                                                       CircleAvatar(
+                                                         backgroundColor:
+                                                         Theme.of(
+                                                             context)
+                                                             .colorScheme.secondary,
+                                                         radius: 40.0,
+                                                         child: const Icon(
+                                                           Icons
+                                                               .account_circle,
+                                                           color:
+                                                           Colors.white,
+                                                           size: 40.0,
+                                                         ),
+                                                       )))),
+                                     ),
+                                     Container(
+                                       padding:EdgeInsets.only(right: 10,top: 5),
+                                         child: Icon(Icons.cancel_outlined,color:Theme.of(context).primaryColor,size: 20,)),
+
+                                   ],
+                                 );
+
+                               },itemCount: value.getAllUserAccounts!.items!.length,);
+
+
+                             },),),
 
 
                              Container(
