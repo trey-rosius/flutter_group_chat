@@ -98,12 +98,46 @@ class HomeScreenState extends State<HomeScreen> {
 
 
                          filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                         child:   const Column(
+                         child:    Column(
                            mainAxisAlignment: MainAxisAlignment.start,
                            crossAxisAlignment: CrossAxisAlignment.start,
                            children: [
 
+                             Align(
+                               alignment: Alignment.topCenter,
+                               child: SafeArea(
+                                 child: Row(
+                                   mainAxisAlignment: MainAxisAlignment.end,
+                                   children: [
 
+                                     Container(
+
+                                       margin: EdgeInsets.only(top: 20),
+                                       padding: const EdgeInsets.symmetric(horizontal: 20,vertical:10 ),
+                                       decoration: BoxDecoration(
+                                           gradient: LinearGradient(
+                                             begin: Alignment.topRight,
+                                             end: Alignment.bottomLeft,
+                                             colors: [
+                                               const Color(0xFFfa709a),
+                                               Theme.of(context).primaryColor
+                                               // Color(0XFFfee140)
+
+                                             ],
+                                           ),
+
+
+                                           shape: BoxShape.rectangle
+
+                                       ),
+                                       child:const Text("Group Home"),
+                                     ),
+
+
+                                   ],
+                                 ),
+                               ),
+                             ),
 
 
                            ],
