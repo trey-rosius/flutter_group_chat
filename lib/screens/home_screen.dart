@@ -3,7 +3,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '../models/group_model.dart';
 import '../repos/group_repository.dart';
 import '../utils/shared_preferences.dart';
 import 'create_group_screen.dart';
@@ -82,71 +83,94 @@ class HomeScreenState extends State<HomeScreen> {
                      width: size.width,
                      child: Image.asset('assets/images/bg.jpeg',fit: BoxFit.cover,)),
 
-                 Container(
+                 SingleChildScrollView(
+                   child: Container(
 
 
-                   height:  size.height,
+                     height:  size.height,
 
-                   width: size.width,
-                   decoration: BoxDecoration(
+                     width: size.width,
+                     decoration: BoxDecoration(
 
-                     color: Colors.black.withOpacity(0.1),
+                       color: Colors.black.withOpacity(0.1),
 
-                   ),
-                   child: ClipRect(
-                       child: BackdropFilter(
-
-
-                         filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                         child:    Column(
-                           mainAxisAlignment: MainAxisAlignment.start,
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-
-                             Align(
-                               alignment: Alignment.topCenter,
-                               child: SafeArea(
-                                 child: Row(
-                                   mainAxisAlignment: MainAxisAlignment.end,
-                                   children: [
-
-                                     Container(
-
-                                       margin: EdgeInsets.only(top: 20),
-                                       padding: const EdgeInsets.symmetric(horizontal: 20,vertical:10 ),
-                                       decoration: BoxDecoration(
-                                           gradient: LinearGradient(
-                                             begin: Alignment.topRight,
-                                             end: Alignment.bottomLeft,
-                                             colors: [
-                                               const Color(0xFFfa709a),
-                                               Theme.of(context).primaryColor
-                                               // Color(0XFFfee140)
-
-                                             ],
-                                           ),
+                     ),
+                     child: ClipRect(
+                         child: BackdropFilter(
 
 
-                                           shape: BoxShape.rectangle
+                           filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                           child: Column(
+                             mainAxisAlignment: MainAxisAlignment.start,
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
 
+                               Align(
+                                 alignment: Alignment.topCenter,
+                                 child: SafeArea(
+                                   child: Row(
+                                     mainAxisAlignment: MainAxisAlignment.end,
+                                     children: [
+
+                                       Container(
+
+                                         margin: EdgeInsets.only(top: 20),
+                                         padding: const EdgeInsets.symmetric(horizontal: 20,vertical:10 ),
+                                         decoration: BoxDecoration(
+                                             gradient: LinearGradient(
+                                               begin: Alignment.topRight,
+                                               end: Alignment.bottomLeft,
+                                               colors: [
+                                                 const Color(0xFFfa709a),
+                                                 Theme.of(context).primaryColor
+                                                 // Color(0XFFfee140)
+
+                                               ],
+                                             ),
+
+
+                                             shape: BoxShape.rectangle
+
+                                         ),
+                                         child:const Text("Group Home"),
                                        ),
-                                       child:const Text("Group Home"),
-                                     ),
 
 
-                                   ],
+                                     ],
+                                   ),
                                  ),
                                ),
-                             ),
+
+        FutureProvider<GroupModel?>.value(value: GroupRepository.instance().getUserGroups(username),
+    initialData:null,
+    catchError: (context,error){
+
+    throw error!;
+    },
+    child: Consumer(builder: (BuildContext context, GroupModel? value, Widget? child) {
+       return value == null ? const Center(child: CircularProgressIndicator(),) : Container(
+         child:Expanded(
+           child: GridView.builder(
+             shrinkWrap: true,
+             itemCount: value.getAllGroupsCreatedByUser!.items!.length,
+               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                     crossAxisCount: 2,),
+               itemBuilder: (BuildContext context, int index ){
+               return Text(value.getAllGroupsCreatedByUser!.items![index].name!);
+               }),
+         )
+       );
+    }))
 
 
-                           ],
-                         ),
+    ],
+                           ),
 
 
 
 
-                       )),
+                         )),
+                   ),
                  ),
 
                ],

@@ -24,6 +24,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  bool loadedAmplify = false;
   Future<void> _initializeApp() async{
     await _configureAmplify();
   }
@@ -44,9 +46,24 @@ class _MyAppState extends State<MyApp> {
       // Once Plugins are added, configure Amplify
       await Amplify.configure(amplifyconfig);
 
+      if(Amplify.isConfigured){
+        print('amplify configure');
+        setState(() {
+          loadedAmplify = true;
+        });
+      }else{
+        setState(() {
+          loadedAmplify = false;
+        });
+      }
+
+
 
 
     } catch(e) {
+      setState(() {
+        loadedAmplify = false;
+      });
       if (kDebugMode) {
         print('an error occured during amplify configuration: $e');
       }
@@ -76,7 +93,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: const Color(0xFFfae15f),
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xFFd33f2b))
       ),
-     home: const HomeScreen(),
+     home: loadedAmplify ?   HomeScreen() : const Center(child: CircularProgressIndicator(),),
      // home: CreateUserAccountScreen(email: 'email',),
 /*
      home: ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),

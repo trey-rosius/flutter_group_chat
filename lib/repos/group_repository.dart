@@ -9,6 +9,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:aws_common/vm.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
+import '../models/group_model.dart';
 import '../utils/utils.dart';
 
 class GroupRepository extends ChangeNotifier {
@@ -75,6 +76,47 @@ class GroupRepository extends ChangeNotifier {
     _loading = value;
     notifyListeners();
   }
+
+
+  Future<GroupModel> getUserGroups(String userId) async{
+
+    String graphQLDocument =
+    '''query get(\$userId: String!) {
+
+  getAllGroupsCreatedByUser(userId: \$userId) {
+    nextToken
+    items {
+      groupProfilePicKey
+      description
+      id
+      name
+      userId
+    }
+  }
+}''';
+
+    var operation = Amplify.API.query(
+
+
+        request: GraphQLRequest<String>(document: graphQLDocument,
+          apiName: "cdk-group_chat-api_AMAZON_COGNITO_USER_POOLS",
+          variables: {
+            "userId": userId,
+
+          },));
+
+
+
+    var response = await operation.response;
+
+    final responseJson = json.decode(response.data!);
+    if (kDebugMode) {
+      print("here$responseJson");
+    }
+    return GroupModel.fromJson(responseJson);
+
+  }
+
 
 
   Future<bool> createGroup(String username) async {
