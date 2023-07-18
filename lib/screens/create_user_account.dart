@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -69,42 +69,118 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
       } else {
         return Container(
           child: Semantics(
+              label: 'pick image',
               child: Image.file(
                 File(_imageFile!.path),
                 width: 150,
-              ),
-              label: 'pick image'),
+              )),
         );
       }
     } else if (_pickImageError != null) {
-      print("error occured during image pick");
-
       return InkWell(
         onTap: () {
           _onImageButtonPressed(ImageSource.gallery, context, profileRepo);
         },
-        child: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(10.0),
-            child: Icon(
-              Icons.account_circle,
-              size: 100,
-              color: Theme.of(context).primaryColor,
-            )),
+        child: Stack(
+          alignment: Alignment.bottomRight,
+
+          children: [
+            Container(
+              alignment: Alignment.center,
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      Color(0xFFfa709a),
+                      Theme.of(context).primaryColor
+                      // Color(0XFFfee140)
+
+                    ],
+                  ),
+
+
+                  shape: BoxShape.circle
+
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child:
+              SvgPicture.asset('assets/images/user_account.svg',height: 90,width: 90,color: Colors.white,),
+
+
+
+            ),
+            Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                width: 40,
+                height: 40,
+
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+
+
+                    shape: BoxShape.circle
+
+                ),
+                child: const Icon(Icons.camera_alt,color: Colors.black,)),
+          ],
+        ),
+
       );
     } else {
       return InkWell(
         onTap: () {
           _onImageButtonPressed(ImageSource.gallery, context, profileRepo);
         },
-        child: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(10.0),
-            child: Icon(
-              Icons.account_circle,
-              size: 150,
-              color: Theme.of(context).primaryColor,
-            )),
+        child: Stack(
+          alignment: Alignment.bottomRight,
+
+          children: [
+            Container(
+              alignment: Alignment.center,
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      Color(0xFFfa709a),
+                      Theme.of(context).primaryColor
+                      // Color(0XFFfee140)
+
+                    ],
+                  ),
+
+
+                  shape: BoxShape.circle
+
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child:
+              SvgPicture.asset('assets/images/user_account.svg',height: 90,width: 90,color: Colors.white,),
+
+
+
+            ),
+            Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                width: 40,
+                height: 40,
+
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+
+
+                    shape: BoxShape.circle
+
+                ),
+                child: const Icon(Icons.camera_alt,color: Colors.black,)),
+          ],
+        ),
+
       );
     }
   }
@@ -167,209 +243,277 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
 
     return Scaffold(
         key: _scaffoldKey,
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: Theme.of(context).primaryColor,
-          title: const Text(
-            'create user profile ',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                profileRepo.loading
-                    ? Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        alignment: Alignment.center,
-                        child: const CircularProgressIndicator())
-                    : InkWell(
-                        onTap: () {
-                          _onImageButtonPressed(
-                              ImageSource.gallery, context, profileRepo);
-                        },
-                        child: profileRepo.profilePic.isEmpty
-                            ? _previewImage(profileRepo, context)
-                            : Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: ClipOval(
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                          child: CachedNetworkImage(
-                                              width: 100.0,
-                                              height: 100.0,
-                                              fit: BoxFit.cover,
-                                              imageUrl: profileRepo.profilePic,
-                                              placeholder: (context, url) =>
-                                                  const CircularProgressIndicator(),
-                                              errorWidget: (context, url, ex) =>
-                                                  CircleAvatar(
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                    radius: 40.0,
-                                                    child: const Icon(
-                                                      Icons.account_circle,
-                                                      color: Colors.white,
-                                                      size: 40.0,
-                                                    ),
-                                                  )))),
-                                ))
 
-                        // child: _prev,
+        body: Stack(
 
-                        ),
-                Form(
-                  key: formKey,
-                  autovalidateMode: AutovalidateMode.always,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        child: TextFormField(
-                          controller: profileRepo.usernameController,
-                          style: const TextStyle(color: Colors.black),
-                          inputFormatters: [
-                            if (denySpaces)
-                              FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                          ],
-                          decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            labelText: 'username',
-                            labelStyle: const TextStyle(color: Colors.black),
-                            hintText: "username",
-                            hintStyle: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+          children: [
+            SizedBox(
+
+              height: size.height,
+              width: size.width,
+              child: Image.asset('assets/images/bg.jpeg',fit: BoxFit.cover,),
+
+
+            ),
+            SingleChildScrollView(
+              child: Container(
+                height:  size.height,
+
+                width: size.width,
+                decoration: BoxDecoration(
+
+                  color: Colors.black.withOpacity(0.1),
+
+                ),
+                child: ClipRect(
+
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: SafeArea(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  height:50,
+                                  width: 50,
+                                  margin: const EdgeInsets.only(left: 10,top: 10),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        colors: [
+                                          const Color(0xFFfa709a),
+                                          Theme.of(context).primaryColor
+                                          // Color(0XFFfee140)
+
+                                        ],
+                                      ),
+
+
+                                      shape: BoxShape.circle
+
+                                  ),
+                                  child: IconButton(onPressed: (){
+                                    Navigator.of(context).pop();
+                                  }, icon: const Icon(Icons.arrow_back)),
+                                ),
+
+                              ],
                             ),
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'username';
-                            }
-                            return null;
-                          },
                         ),
-                      ),
-                    ],
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: size.height/14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset('assets/images/convos.svg',height: 50,width: 50,color: Colors.white,),
+                              const Text("Convos",style: TextStyle(fontFamily: 'Ultra-Regular',
+                                  fontSize: 40,color: Colors.white),),
+                            ],
+                          ),
+                        ),
+
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              profileRepo.loading
+                                  ? Container(
+                                      margin: const EdgeInsets.only(top: 20),
+                                      alignment: Alignment.center,
+                                      child: const CircularProgressIndicator())
+                                  : InkWell(
+                                      onTap: () {
+                                        _onImageButtonPressed(
+                                            ImageSource.gallery, context, profileRepo);
+                                      },
+                                      child: profileRepo.profilePic.isEmpty
+                                          ? _previewImage(profileRepo, context)
+                                          : Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: ClipOval(
+                                                    child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.circular(30),
+                                                        child: CachedNetworkImage(
+                                                            width: 100.0,
+                                                            height: 100.0,
+                                                            fit: BoxFit.cover,
+                                                            imageUrl: profileRepo.profilePic,
+                                                            placeholder: (context, url) =>
+                                                                const CircularProgressIndicator(),
+                                                            errorWidget: (context, url, ex) =>
+                                                                CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Theme.of(context)
+                                                                          .colorScheme
+                                                                          .secondary,
+                                                                  radius: 40.0,
+                                                                  child: const Icon(
+                                                                    Icons.account_circle,
+                                                                    color: Colors.white,
+                                                                    size: 40.0,
+                                                                  ),
+                                                                )))),
+                                              ))
+
+                                      // child: _prev,
+
+                                      ),
+                              Form(
+                                key: formKey,
+                                autovalidateMode: AutovalidateMode.always,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 20),
+                                      child: TextFormField(
+                                        controller: profileRepo.usernameController,
+                                        style: const TextStyle(color: Colors.black),
+                                        inputFormatters: [
+                                          if (denySpaces)
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                                        ],
+                                        decoration: InputDecoration(
+                                          fillColor: Colors.white.withOpacity(0.2),
+                                          filled: true,
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Theme.of(context).primaryColor, width: 2),
+                                            borderRadius: const BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Theme.of(context).primaryColor, width: 2),
+                                            borderRadius: const BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Theme.of(context).primaryColor,
+                                                width: 2),
+                                            borderRadius: const BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          disabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Theme.of(context).primaryColor, width: 2),
+                                            borderRadius: const BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          labelText: 'username',
+                                          labelStyle: const TextStyle(color: Colors.black),
+                                          hintText: "username",
+
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'username';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 20),
+                                child: Column(
+                                  children: <Widget>[
+                                    profileRepo.loading
+                                        ? Container(
+                                            padding: const EdgeInsets.only(top: 30.0),
+                                            child: const CircularProgressIndicator(),
+                                          )
+                                        : Container(
+                                            padding: const EdgeInsets.symmetric(vertical: 20),
+                                            child: SizedBox(
+                                              width: size.width / 1.1,
+                                              height: 50,
+                                              child: ElevatedButton(
+                                                  style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty.all(
+                                                              Theme.of(context).primaryColor),
+                                                      shape: MaterialStateProperty.all(
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                      10)))),
+                                                  onPressed: () {
+                                                    final FormState form =
+                                                        formKey.currentState!;
+                                                    if (!form.validate()) {
+                                                    } else {
+                                                      form.save();
+
+                                                      if (kDebugMode) {
+                                                        print(profileRepo.profilePic);
+                                                      }
+
+                                                      profileRepo
+                                                          .createUserAccount(widget.email)
+                                                          .then((bool value) {
+                                                        if (value) {
+                                                          Navigator.push(context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) {
+                                                            return MultiProvider(
+                                                              providers: [
+                                                                ChangeNotifierProvider(
+                                                                  create: (_) =>
+                                                                      ProfileRepository
+                                                                          .instance(),
+                                                                ),
+                                                                  ChangeNotifierProvider(create: (_) => SharedPrefsUtils.instance(),),
+                                                              ],
+                                                              child: HomeScreen(),
+                                                            );
+                                                          }));
+                                                        } else {
+                                                          print('an error occured');
+                                                        }
+                                                      });
+                                                    }
+                                                  },
+                                                  child: const Text(
+                                                    'Continue',
+                                                    style: TextStyle(
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.black),
+                                                  )),
+                                            ),
+                                          )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  child: Column(
-                    children: <Widget>[
-                      profileRepo.loading
-                          ? Container(
-                              padding: const EdgeInsets.only(top: 30.0),
-                              child: const CircularProgressIndicator(),
-                            )
-                          : Container(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: SizedBox(
-                                width: size.width / 1.1,
-                                height: 50,
-                                child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                Theme.of(context).primaryColor),
-                                        shape: MaterialStateProperty.all(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        10)))),
-                                    onPressed: () {
-                                      final FormState form =
-                                          formKey.currentState!;
-                                      if (!form.validate()) {
-                                      } else {
-                                        form.save();
-
-                                        if (kDebugMode) {
-                                          print(profileRepo.profilePic);
-                                        }
-
-                                        profileRepo
-                                            .createUserAccount(widget.email)
-                                            .then((bool value) {
-                                          if (value) {
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                              return MultiProvider(
-                                                providers: [
-                                                  ChangeNotifierProvider(
-                                                    create: (_) =>
-                                                        ProfileRepository
-                                                            .instance(),
-                                                  ),
-                                                    ChangeNotifierProvider(create: (_) => SharedPrefsUtils.instance(),),
-                                                ],
-                                                child: HomeScreen(),
-                                              );
-                                            }));
-                                          } else {
-                                            print('an error occured');
-                                          }
-                                        });
-                                      }
-                                    },
-                                    child: const Text(
-                                      'Continue',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                    )),
-                              ),
-                            )
-                    ],
-                  ),
-                )
-              ],
+              ),
             ),
-          ),
+          ],
         ));
   }
 }

@@ -22,8 +22,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class GroupChatScreen extends StatefulWidget {
-  GroupChatScreen(this.email);
-  final String email;
+  GroupChatScreen(this.username, {super.key});
+  final String username;
 
 
 
@@ -333,7 +333,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
 
        print("event data is ${value['typingIndicator']}");
 
-       if(value['typingIndicator']['userId'] == widget.email)
+       if(value['typingIndicator']['userId'] == widget.username)
          {
 
            print("can't show typing indicator for me");
@@ -389,7 +389,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
              reverse: true,
              itemBuilder: (context,index){
              return
-                 widget.email == chatMessagesList[index]['userId'] ?
+                 widget.username == chatMessagesList[index]['userId'] ?
                      RightChatScreen(message:chatMessagesList[index]) :LeftChatScreen(message: chatMessagesList[index],);
 
          }),),
@@ -495,10 +495,10 @@ class GroupChatScreenState extends State<GroupChatScreen> {
 
                               if (text.trim().isNotEmpty) {
 
-                                typingIndicator(widget.email,'groupIdadnasdad',true);
+                                typingIndicator(widget.username,'groupIdadnasdad',true);
                               } else {
 
-                                typingIndicator(widget.email,'groupIdadnasdad',false);
+                                typingIndicator(widget.username,'groupIdadnasdad',false);
 
                               }
                             },
@@ -521,12 +521,12 @@ class GroupChatScreenState extends State<GroupChatScreen> {
                       color: Theme.of(context).primaryColor,
                       shape: BoxShape.circle),
                   child: Center(
-                    child: new IconButton(
+                    child: IconButton(
                       icon: new Icon(Icons.arrow_forward),
                       onPressed: (){
-                        sendMessage('GroupText',textEditingController.text,widget.email);
+                        sendMessage('GroupText',textEditingController.text,widget.username);
                         textEditingController.clear();
-                        typingIndicator(widget.email,'groupIdadnasdad',false);
+                        typingIndicator(widget.username,'groupIdadnasdad',false);
                       }
 
                     ),

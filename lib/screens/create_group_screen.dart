@@ -283,6 +283,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                  child: BackdropFilter(
                    filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
                    child: Column(
+                     mainAxisAlignment: MainAxisAlignment.start,
+                     crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
                        Align(
                          alignment: Alignment.topCenter,
@@ -322,8 +324,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                        Container(
                          padding: const EdgeInsets.symmetric(horizontal: 20),
                          child: Column(
-                           mainAxisAlignment: MainAxisAlignment.center,
-                           crossAxisAlignment: CrossAxisAlignment.center,
+                           mainAxisAlignment: MainAxisAlignment.start,
+                           crossAxisAlignment: CrossAxisAlignment.start,
                            children: <Widget>[
                            Container(
                              padding: EdgeInsets.only(top: 40),
@@ -421,7 +423,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                                        focusedErrorBorder: OutlineInputBorder(
 
                                                          borderSide: BorderSide(color: Theme.of(context).primaryColor, ),
-                                                         borderRadius: BorderRadius.all(
+                                                         borderRadius: const BorderRadius.all(
                                                            Radius.circular(10),
                                                          ),
 
@@ -546,43 +548,55 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                            ),
 
 
-
+                  groupRepo.groupId == null ? const SizedBox() :
                      InkWell(
                        onTap: () {
 
                        },
-                       child: Stack(
-                         alignment: Alignment.topRight,
+                       child: Container(
+                         padding: const EdgeInsets.only(top: 10),
+                         child: Row(
+                           children: [
+                             Stack(
+                               alignment: Alignment.topRight,
 
-                         children: [
-                           Container(
-                             alignment: Alignment.center,
-                             width: 60,
-                             height: 60,
-                             decoration: BoxDecoration(
-                                 gradient: LinearGradient(
-                                   begin: Alignment.topRight,
-                                   end: Alignment.bottomLeft,
-                                   colors: [
-                                     const Color(0xFFfa709a),
-                                     Theme.of(context).primaryColor
-                                     // Color(0XFFfee140)
+                               children: [
+                                 Container(
+                                   alignment: Alignment.center,
+                                   width: 60,
+                                   height: 60,
+                                   decoration: BoxDecoration(
+                                       gradient: LinearGradient(
+                                         begin: Alignment.topRight,
+                                         end: Alignment.bottomLeft,
+                                         colors: [
+                                           const Color(0xFFfa709a),
+                                           Theme.of(context).primaryColor
+                                           // Color(0XFFfee140)
 
-                                   ],
+                                         ],
+                                       ),
+
+
+                                       shape: BoxShape.circle
+
+                                   ),
+                                   padding: const EdgeInsets.all(10.0),
+                                   child:const Icon(Icons.account_circle,size: 40,color: Colors.white,),
+
+
+
                                  ),
-
-
-                                 shape: BoxShape.circle
-
+                                 const Icon(Icons.add_circle_outline_outlined,color: Colors.white),
+                               ],
                              ),
-                             padding: const EdgeInsets.all(10.0),
-                             child:const Icon(Icons.account_circle,size: 40,color: Colors.white,),
+                             Container(
+                               padding:const EdgeInsets.only(left: 10),
 
-
-
-                           ),
-                           const Icon(Icons.add_circle_outline_outlined,color: Colors.white),
-                         ],
+                               child: const Text("Add Group Members",style: TextStyle(fontSize: 15,color: Colors.white),),
+                             )
+                           ],
+                         ),
                        ),
 
                      ),
@@ -629,33 +643,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
 
 
-                                               groupRepo.createGroup(widget.username).then((bool value){
-
-                                                 if(value){
-
-                                                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                     return MultiProvider(
-                                                       providers: [
-                                                         ChangeNotifierProvider(create: (_) => GroupRepository.instance(),),
-                                                         //   ChangeNotifierProvider(create: (_) => PostRepository.instance(),),
-                                                         //   ChangeNotifierProvider(create: (_) => SharedPrefsUtils.instance(),),
-
-                                                       ],
-                                                       child: HomeScreen(),
-
-                                                     );
-
-
-                                                   }));
-
-
-                                                 }else{
-                                                   print('an error occured');
-                                                 }
-
-
-
-                                               });
+                                               groupRepo.createGroup(widget.username);
 
 
 

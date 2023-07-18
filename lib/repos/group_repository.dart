@@ -28,7 +28,15 @@ class GroupRepository extends ChangeNotifier {
 
   bool _logout = false;
 
+  String? _groupId;
 
+
+  String? get groupId => _groupId;
+
+  set groupId(String? value) {
+    _groupId = value;
+    notifyListeners();
+  }
 
   bool get logout => _logout;
 
@@ -84,17 +92,17 @@ class GroupRepository extends ChangeNotifier {
             \$description: String!
             \$userId: String!
             
-            \$groupProfilePicUrl:String!
+            \$groupProfilePicKey:String!
            ) {
   createGroup(input: {
 
  name: \$name, 
  userId:\$userId,
 
-  groupProfilePicUrl: \$groupProfilePicUrl, description: \$description}) {
+  groupProfilePicKey: \$groupProfilePicKey, description: \$description}) {
     userId
     id
-    groupProfilePicUrl
+    groupProfilePicKey
     name
     description
   }
@@ -110,7 +118,7 @@ class GroupRepository extends ChangeNotifier {
               "userId":username,
 
 
-              "groupProfilePicUrl":groupProfilePic,
+              "groupProfilePicKey":groupProfilePicKey,
               "name":nameController.text,
               "description":descriptionController.text,
 
@@ -119,10 +127,15 @@ class GroupRepository extends ChangeNotifier {
 
       var response = await operation.response;
 
-      var data = response.data;
+
       if(response.data != null){
+        var data = json.decode(response.data!);
         if (kDebugMode) {
           print('Mutation result is${data!}');
+
+          groupId = data["createGroup"]['id'];
+          print('Group Id is${data["createGroup"]['id']}');
+          print('Group name is${data["createGroup"]['name']}');
           loading = false;
 
         }

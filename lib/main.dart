@@ -76,13 +76,15 @@ class _MyAppState extends State<MyApp> {
         primaryColor: const Color(0xFFfae15f),
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xFFd33f2b))
       ),
-     home: LoginScreen(),
-     // home: HomeScreen(),
-      /*
-     home: ChangeNotifierProvider(create:(_) =>GroupRepository.instance(),
-         child:const CreateGroupScreen(email: 'rosius',)),
+     home: const HomeScreen(),
+     // home: CreateUserAccountScreen(email: 'email',),
+/*
+     home: ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),
+         child:CreateUserAccountScreen(email: 'email',)),
 
-       */
+
+ */
+
     );
 
 
