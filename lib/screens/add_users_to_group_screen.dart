@@ -1,13 +1,16 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:group_chat/repos/group_repository.dart';
 import 'package:provider/provider.dart';
 import '../models/user_profile_model.dart';
 import '../repos/profile_repository.dart';
 import '../utils/custom_checkbox.dart';
 
 class AddUsersToGroupScreen extends StatefulWidget {
-  const AddUsersToGroupScreen({Key? key}) : super(key: key);
+  const AddUsersToGroupScreen(this.groupId,this.groupRepository, {super.key});
+  final String groupId;
+  final GroupRepository groupRepository;
 
   @override
   State<AddUsersToGroupScreen> createState() => _AddUsersToGroupScreenState();
@@ -18,6 +21,8 @@ class _AddUsersToGroupScreenState extends State<AddUsersToGroupScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+
     return Scaffold(
       body: Stack(
         children: [
@@ -154,14 +159,20 @@ class _AddUsersToGroupScreenState extends State<AddUsersToGroupScreen> {
                                                    )))),
                                  ),
                                  Container(
-                                   child: Text(value.getAllUserAccounts!.items![index].username!),
+                                   child: Text(value.getAllUserAccounts!.items![index].username!,
+                                   style: TextStyle(fontSize: 20,color: Colors.black),),
                                  ),
                                ],
                              ),
                               Container(
                                 padding:EdgeInsets.only(right: 10),
-                                child: CustomCheckbox(isChecked: isChecked, iconSize: 20,
-                                  onChange: (bool value) => true, size: 40, selectedColor: Theme.of(context).primaryColor,
+                                child: CustomCheckbox(
+                                     groupId: widget.groupId,
+                                     userId: value.getAllUserAccounts!.items![index].username!,
+                                     groupRepository: widget.groupRepository,
+
+                                    iconSize: 20,
+                                   size: 40, selectedColor: Theme.of(context).primaryColor,
                                   selectedIconColor: Colors.white,
                                   borderColor: Theme.of(context).primaryColor),
                               )

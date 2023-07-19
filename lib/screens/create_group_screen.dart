@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_chat/models/user_profile_model.dart';
 import 'package:group_chat/repos/profile_repository.dart';
+import 'package:group_chat/screens/add_users_to_group_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
@@ -576,7 +577,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   groupRepo.groupId == null ? const SizedBox() :
                      InkWell(
                        onTap: () {
-
+                         Navigator.push(context,
+                             MaterialPageRoute(builder: (context) => AddUsersToGroupScreen(groupRepo.groupId!, groupRepo)));
                        },
                        child: Container(
                          padding: const EdgeInsets.only(top: 10),

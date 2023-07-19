@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
-
+import 'package:group_chat/repos/group_repository.dart';
+import 'package:provider/provider.dart';
 class CustomCheckbox extends StatefulWidget {
-  final Function onChange;
-  final bool isChecked;
+
+
   final double size;
   final double iconSize;
   final Color selectedColor;
   final Color selectedIconColor;
   final Color borderColor;
+  final GroupRepository groupRepository;
+  final String userId;
+  final String groupId;
 
 
   const CustomCheckbox(
-      {super.key,  required this.isChecked,
-        required this.onChange,
+      {super.key,
+
         required  this.size,
         required  this.iconSize,
         required  this.selectedColor,
         required this.selectedIconColor,
         required this.borderColor,
+        required this.groupRepository,
+        required this.userId,
+        required this.groupId
         });
 
   @override
@@ -25,11 +32,11 @@ class CustomCheckbox extends StatefulWidget {
 }
 
 class _CustomCheckboxState extends State<CustomCheckbox> {
-  bool _isSelected = false;
+ bool _isSelected = false;
 
   @override
   void initState() {
-    _isSelected = widget.isChecked;
+
     super.initState();
   }
 
@@ -37,10 +44,14 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _isSelected = !_isSelected;
-          widget.onChange(_isSelected);
+
+        widget.groupRepository.addUserToGroup(widget.userId, widget.groupId).then((value){
+          setState(() {
+            _isSelected = value;
+          });
         });
+
+
       },
       child: AnimatedContainer(
         margin: const EdgeInsets.all(4),
@@ -53,7 +64,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
               colors: [
                 const Color(0xFFfa709a),
                 Theme.of(context).primaryColor
-                // Color(0XFFfee140)
+
 
               ],
             ):const LinearGradient(colors: [Colors.transparent,Colors.transparent]),
