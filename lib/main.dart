@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:group_chat/repos/group_repository.dart';
+import 'package:group_chat/screens/add_users_to_group_screen.dart';
 import 'package:group_chat/screens/create_group_screen.dart';
 import 'package:group_chat/screens/create_user_account.dart';
 import 'package:group_chat/repos/profile_repository.dart';
@@ -93,7 +94,8 @@ class _MyAppState extends State<MyApp> {
         primaryColor: const Color(0xFFfae15f),
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xFFd33f2b))
       ),
-     home: loadedAmplify ?   HomeScreen() : const Center(child: CircularProgressIndicator(),),
+    // home: loadedAmplify ?   HomeScreen() : const Center(child: CircularProgressIndicator(),),
+     home: loadedAmplify ?   AddUsersToGroupScreen() : const Center(child: CircularProgressIndicator(),),
      // home: CreateUserAccountScreen(email: 'email',),
 /*
      home: ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),
