@@ -578,7 +578,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                      InkWell(
                        onTap: () {
                          Navigator.push(context,
-                             MaterialPageRoute(builder: (context) => AddUsersToGroupScreen(groupRepo.groupId!, groupRepo)));
+                             MaterialPageRoute(builder: (context) => ChangeNotifierProvider(create: (_)=>GroupRepository.instance(),
+                             child: AddUsersToGroupScreen(groupRepo.groupId!),)));
                        },
                        child: Container(
                          padding: const EdgeInsets.only(top: 10),

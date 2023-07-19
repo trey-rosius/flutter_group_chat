@@ -6,21 +6,25 @@ import 'package:provider/provider.dart';
 import '../models/user_profile_model.dart';
 import '../repos/profile_repository.dart';
 import '../utils/custom_checkbox.dart';
-
+import 'package:amplify_flutter/amplify_flutter.dart';
 class AddUsersToGroupScreen extends StatefulWidget {
-  const AddUsersToGroupScreen(this.groupId,this.groupRepository, {super.key});
+  const AddUsersToGroupScreen(this.groupId, {super.key});
   final String groupId;
-  final GroupRepository groupRepository;
+
 
   @override
   State<AddUsersToGroupScreen> createState() => _AddUsersToGroupScreenState();
 }
 
 class _AddUsersToGroupScreenState extends State<AddUsersToGroupScreen> {
-  bool isChecked = false;
+
+  late final Stream<GraphQLResponse<String>> operation;
+  late final Stream<GraphQLResponse<String>> sendMessageStream;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var groupRepository = context.watch<GroupRepository>();
 
 
     return Scaffold(
@@ -108,6 +112,62 @@ class _AddUsersToGroupScreenState extends State<AddUsersToGroupScreen> {
                         ),
                       ),
                     ),
+
+                 groupRepository.userProfile.isEmpty ? const SizedBox():
+                 SizedBox(
+                      height: 80,
+                      child:  ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context,int index){
+                          return Container(
+
+                                    padding: const EdgeInsets.all(10.0),
+                                    child:  CircleAvatar(
+                                      radius: 30,
+                                      child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(100),
+
+                                                  child: CachedNetworkImage(
+                                                      height: 60,
+                                                      width: 60,
+
+                                                      fit: BoxFit.cover,
+                                                      imageUrl: groupRepository.userProfile[index].profilePicKey!,
+                                                      placeholder: (context,
+                                                          url) =>
+                                                      const CircularProgressIndicator(),
+                                                      errorWidget: (context,
+                                                          url, ex) =>
+                                                          CircleAvatar(
+                                                            backgroundColor:
+                                                            Theme.of(
+                                                                context)
+                                                                .colorScheme.secondary,
+                                                            radius: 40.0,
+                                                            child: const Icon(
+                                                              Icons
+                                                                  .account_circle,
+                                                              color:
+                                                              Colors.white,
+                                                              size: 40.0,
+                                                            ),
+                                                          )),
+                                                ),
+                                    ));
+
+
+
+
+
+
+
+
+
+                        },
+                        itemCount: groupRepository.userProfile.length,
+                       ),
+                    ),
                     FutureProvider<UserProfileModel?>.value(value: ProfileRepository.instance().getUserProfiles(),
                       initialData:null,
                       catchError: (context,error){
@@ -116,79 +176,79 @@ class _AddUsersToGroupScreenState extends State<AddUsersToGroupScreen> {
                       },
                       child: Consumer(builder: (BuildContext context, UserProfileModel? value, Widget? child) {
                         return value == null ? const Center(child: CircularProgressIndicator(),) :
-                        ListView.separated(
-                          shrinkWrap: true,
+                        Expanded(
+                          child: ListView.separated(
+                            shrinkWrap: true,
 
-                           itemBuilder: (BuildContext context,int index){
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                             Row(
+                             itemBuilder: (BuildContext context,int index){
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                               Row(
 
-                               children: [
-                                 Container(
-                                   padding: const EdgeInsets.all(10.0),
-                                   child: ClipOval(
-                                       child: ClipRRect(
-                                           borderRadius:
-                                           BorderRadius.circular(
-                                               100),
-                                           child: CachedNetworkImage(
-                                               width: 50.0,
-                                               height: 50.0,
-                                               fit: BoxFit.cover,
-                                               imageUrl: value.getAllUserAccounts!.items![index].profilePicKey!,
-                                               placeholder: (context,
-                                                   url) =>
-                                               const CircularProgressIndicator(),
-                                               errorWidget: (context,
-                                                   url, ex) =>
-                                                   CircleAvatar(
-                                                     backgroundColor:
-                                                     Theme.of(
-                                                         context)
-                                                         .colorScheme.secondary,
-                                                     radius: 40.0,
-                                                     child: const Icon(
-                                                       Icons
-                                                           .account_circle,
-                                                       color:
-                                                       Colors.white,
-                                                       size: 40.0,
-                                                     ),
-                                                   )))),
-                                 ),
-                                 Container(
-                                   child: Text(value.getAllUserAccounts!.items![index].username!,
-                                   style: TextStyle(fontSize: 20,color: Colors.black),),
-                                 ),
-                               ],
-                             ),
-                              Container(
-                                padding:EdgeInsets.only(right: 10),
-                                child: CustomCheckbox(
-                                     groupId: widget.groupId,
-                                     userId: value.getAllUserAccounts!.items![index].username!,
-                                     groupRepository: widget.groupRepository,
+                                 children: [
+                                   Container(
+                                     padding: const EdgeInsets.all(10.0),
+                                     child: ClipOval(
+                                         child: ClipRRect(
+                                             borderRadius:
+                                             BorderRadius.circular(
+                                                 100),
+                                             child: CachedNetworkImage(
+                                                 width: 50.0,
+                                                 height: 50.0,
+                                                 fit: BoxFit.cover,
+                                                 imageUrl: value.getAllUserAccounts!.items![index].profilePicKey!,
+                                                 placeholder: (context,
+                                                     url) =>
+                                                 const CircularProgressIndicator(),
+                                                 errorWidget: (context,
+                                                     url, ex) =>
+                                                     CircleAvatar(
+                                                       backgroundColor:
+                                                       Theme.of(
+                                                           context)
+                                                           .colorScheme.secondary,
+                                                       radius: 40.0,
+                                                       child: const Icon(
+                                                         Icons
+                                                             .account_circle,
+                                                         color:
+                                                         Colors.white,
+                                                         size: 40.0,
+                                                       ),
+                                                     )))),
+                                   ),
+                                   Text(value.getAllUserAccounts!.items![index].username!,
+                                   style: const TextStyle(fontSize: 20,color: Colors.black),),
+                                 ],
+                               ),
+                                Container(
+                                  padding:EdgeInsets.only(right: 10),
+                                  child: CustomCheckbox(
+                                       groupId: widget.groupId,
+                                       userItem: value.getAllUserAccounts!.items![index],
+                                       groupRepository: groupRepository,
 
-                                    iconSize: 20,
-                                   size: 40, selectedColor: Theme.of(context).primaryColor,
-                                  selectedIconColor: Colors.white,
-                                  borderColor: Theme.of(context).primaryColor),
-                              )
-
+                                      iconSize: 20,
+                                     size: 40, selectedColor: Theme.of(context).primaryColor,
+                                    selectedIconColor: Colors.white,
+                                    borderColor: Theme.of(context).primaryColor),
+                                )
 
 
 
 
-                            ],
-                          );
 
-                        },
-                          itemCount: value.getAllUserAccounts!.items!.length,
-                          separatorBuilder: (BuildContext context, int index) {
-                             return const Divider();
-                          },);
+                              ],
+                            );
+
+                          },
+                            itemCount: value.getAllUserAccounts!.items!.length,
+                            separatorBuilder: (BuildContext context, int index) {
+                               return const Divider();
+                            },),
+                        );
 
 
                       },),),

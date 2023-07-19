@@ -12,7 +12,6 @@ import 'package:group_chat/screens/typing_indicator.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dart:async';
 
@@ -155,7 +154,6 @@ class GroupChatScreenState extends State<GroupChatScreen> {
 
     } catch (ex) {
 
-      print(ex.toString());
 
       return false;
 
@@ -236,7 +234,6 @@ class GroupChatScreenState extends State<GroupChatScreen> {
 
     } catch (ex) {
 
-      print(ex.toString());
 
       return false;
 
@@ -290,18 +287,18 @@ class GroupChatScreenState extends State<GroupChatScreen> {
            chatMessagesList.insert(0, value['newMessage']);
          });
        }
-        print("all list messages are ${chatMessagesList}");
+        if (kDebugMode) {
+          print("all list messages are $chatMessagesList");
+          print('Subscription event data received: ${event.data}');
+        }
 
 
 
-
-
-
-        // print("map is ${map["typingIndicator"]}");
-        print('Subscription event data received: ${event.data}');
       }
     } on Exception catch (e) {
-      print('Error in subscription stream: $e');
+      if (kDebugMode) {
+        print('Error in subscription stream: $e');
+      }
     }
   }
 
@@ -335,12 +332,10 @@ class GroupChatScreenState extends State<GroupChatScreen> {
 
         Map value = json.decode(event.data!);
 
-       print("event data is ${value['typingIndicator']}");
 
        if(value['typingIndicator']['userId'] == widget.username)
          {
 
-           print("can't show typing indicator for me");
          }else{
 
          setState(() {
@@ -354,10 +349,11 @@ class GroupChatScreenState extends State<GroupChatScreen> {
 
 
        // print("map is ${map["typingIndicator"]}");
-        print('Subscription event data received: ${event.data}');
+        if (kDebugMode) {
+          print('Subscription event data received: ${event.data}');
+        }
       }
     } on Exception catch (e) {
-      print('Error in subscription stream: $e');
     }
   }
 

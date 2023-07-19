@@ -10,6 +10,9 @@ import 'package:aws_common/vm.dart';
 
 
 import '../models/group_model.dart';
+import '../models/user_item.dart';
+import '../models/user_profile_model.dart';
+
 import '../utils/utils.dart';
 
 class GroupRepository extends ChangeNotifier {
@@ -24,8 +27,19 @@ class GroupRepository extends ChangeNotifier {
   bool _logout = false;
 
   String? _groupId;
+ final List<UserItem> _userProfile=[];
 
-  String? get groupId => _groupId;
+
+  List<UserItem> get userProfile => _userProfile;
+
+  set userProfile(value) {
+    _userProfile.add(value);
+    notifyListeners();
+  }
+
+
+
+    String? get groupId => _groupId;
 
   set groupId(String? value) {
     _groupId = value;

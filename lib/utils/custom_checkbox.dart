@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_chat/repos/group_repository.dart';
-import 'package:provider/provider.dart';
+
+import '../models/user_item.dart';
 class CustomCheckbox extends StatefulWidget {
 
 
@@ -10,7 +11,7 @@ class CustomCheckbox extends StatefulWidget {
   final Color selectedIconColor;
   final Color borderColor;
   final GroupRepository groupRepository;
-  final String userId;
+  final UserItem userItem;
   final String groupId;
 
 
@@ -23,7 +24,7 @@ class CustomCheckbox extends StatefulWidget {
         required this.selectedIconColor,
         required this.borderColor,
         required this.groupRepository,
-        required this.userId,
+        required this.userItem,
         required this.groupId
         });
 
@@ -45,8 +46,11 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
     return GestureDetector(
       onTap: () {
 
-        widget.groupRepository.addUserToGroup(widget.userId, widget.groupId).then((value){
+
+
+        widget.groupRepository.addUserToGroup(widget.userItem.id!, widget.groupId).then((value){
           setState(() {
+            widget.groupRepository.userProfile = widget.userItem;
             _isSelected = value;
           });
         });
