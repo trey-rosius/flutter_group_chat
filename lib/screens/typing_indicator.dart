@@ -1,15 +1,15 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TypingIndicator extends StatefulWidget {
   const TypingIndicator({
-  super.key,
-  this.showIndicator = false,
-  this.bubbleColor = const Color(0xFF646b7f),
-
-  this.flashingCircleDarkColor = const Color(0xFF333333),
-  this.flashingCircleBrightColor = const Color(0xFFaec1dd),
+    super.key,
+    this.showIndicator = false,
+    this.bubbleColor = const Color(0xFFfae15f),
+    this.flashingCircleDarkColor = const Color(0xFF333333),
+    this.flashingCircleBrightColor =  Colors.white,
   });
 
   final bool showIndicator;
@@ -21,9 +21,10 @@ class TypingIndicator extends StatefulWidget {
   State<TypingIndicator> createState() => _TypingIndicatorState();
 }
 
-class _TypingIndicatorState extends State<TypingIndicator> with TickerProviderStateMixin {
-
+class _TypingIndicatorState extends State<TypingIndicator>
+    with TickerProviderStateMixin {
   late AnimationController _appearanceController;
+
   late Animation<double> _indicatorSpaceAnimation;
 
   late Animation<double> _smallBubbleAnimation;
@@ -36,13 +37,16 @@ class _TypingIndicatorState extends State<TypingIndicator> with TickerProviderSt
     Interval(0.35, 0.9),
     Interval(0.45, 1.0),
   ];
+
   @override
   void initState() {
     super.initState();
 
     _appearanceController = AnimationController(
       vsync: this,
-    );
+    )..addListener(() {
+      setState(() {});
+    });
 
     _indicatorSpaceAnimation = CurvedAnimation(
       parent: _appearanceController,
@@ -74,7 +78,6 @@ class _TypingIndicatorState extends State<TypingIndicator> with TickerProviderSt
       duration: const Duration(milliseconds: 1500),
     );
 
-
     if (widget.showIndicator) {
       _showIndicator();
     }
@@ -99,17 +102,21 @@ class _TypingIndicatorState extends State<TypingIndicator> with TickerProviderSt
     _repeatingController.dispose();
     super.dispose();
   }
+
   void _showIndicator() {
     _appearanceController
       ..duration = const Duration(milliseconds: 750)
       ..forward();
+    _repeatingController.repeat();
   }
 
   void _hideIndicator() {
     _appearanceController
       ..duration = const Duration(milliseconds: 150)
       ..reverse();
+    _repeatingController.stop();
   }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -155,14 +162,14 @@ class _TypingIndicatorState extends State<TypingIndicator> with TickerProviderSt
         ],
       ),
     );
-
   }
 }
+
 class CircleBubble extends StatelessWidget {
   const CircleBubble({
-  super.key,
-  required this.size,
-  required this.bubbleColor,
+    super.key,
+    required this.size,
+    required this.bubbleColor,
   });
 
   final double size;
@@ -183,11 +190,11 @@ class CircleBubble extends StatelessWidget {
 
 class AnimatedBubble extends StatelessWidget {
   const AnimatedBubble({
-  super.key,
-  required this.animation,
-  required this.left,
-  required this.bottom,
-  required this.bubble,
+    super.key,
+    required this.animation,
+    required this.left,
+    required this.bottom,
+    required this.bubble,
   });
 
   final Animation<double> animation;
@@ -217,12 +224,12 @@ class AnimatedBubble extends StatelessWidget {
 
 class StatusBubble extends StatelessWidget {
   const StatusBubble({
-  super.key,
-  required this.repeatingController,
-  required this.dotIntervals,
-  required this.flashingCircleBrightColor,
-  required this.flashingCircleDarkColor,
-  required this.bubbleColor,
+    super.key,
+    required this.repeatingController,
+    required this.dotIntervals,
+    required this.flashingCircleBrightColor,
+    required this.flashingCircleDarkColor,
+    required this.bubbleColor,
   });
 
   final AnimationController repeatingController;
@@ -273,12 +280,12 @@ class StatusBubble extends StatelessWidget {
 
 class FlashingCircle extends StatelessWidget {
   const FlashingCircle({
-  super.key,
-  required this.index,
-  required this.repeatingController,
-  required this.dotIntervals,
-  required this.flashingCircleBrightColor,
-  required this.flashingCircleDarkColor,
+    super.key,
+    required this.index,
+    required this.repeatingController,
+    required this.dotIntervals,
+    required this.flashingCircleBrightColor,
+    required this.flashingCircleDarkColor,
   });
 
   final int index;

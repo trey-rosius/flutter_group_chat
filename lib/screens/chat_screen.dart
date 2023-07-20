@@ -21,7 +21,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class GroupChatScreen extends StatefulWidget {
-  GroupChatScreen(this.username, {super.key});
+  const GroupChatScreen(this.username, {super.key});
   final String username;
 
 
@@ -34,7 +34,7 @@ class GroupChatScreen extends StatefulWidget {
 class GroupChatScreenState extends State<GroupChatScreen> {
 
   bool _isSomeoneTyping = false;
-  final greyColor = Color(0xffaeaeae);
+  final greyColor = const Color(0xffaeaeae);
   bool update = false;
   String chatId="";
 
@@ -132,7 +132,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
 
         Map value = json.decode(response.data!);
         if (kDebugMode) {
-          print('Mutation result is' + data!);
+          print('Mutation result is${data!}');
 
 
         }
@@ -257,7 +257,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
     sendMessageStream = Amplify.API.subscribe(
       GraphQLRequest<String>(
         document: graphQLDocument,
-        apiName: "cdk-group_chat-api_API_KEY",
+        apiName: "cdk-group_chat-api_AMAZON_COGNITO_USER_POOLS",
 
       ),
       onEstablished: () => print('Subscription established'),
@@ -318,7 +318,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
    operation = Amplify.API.subscribe(
       GraphQLRequest<String>(
         document: graphQLDocument,
-        apiName: "cdk-group_chat-api_API_KEY",
+        apiName: "cdk-group_chat-api_AMAZON_COGNITO_USER_POOLS",
 
       ),
       onEstablished: () => print('Subscription established'),
@@ -373,38 +373,102 @@ class GroupChatScreenState extends State<GroupChatScreen> {
     final platform = Theme.of(context).platform;
 
     return  Scaffold(
-      backgroundColor: const Color(0xFF1e1d2d),
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: const Text("Chat Screen",style: TextStyle(color: Colors.black),
-      ),),
 
 
-        body:  Column(
-          children: <Widget>[
+
+        body:  Stack(
+          children: [
+            SizedBox(
+                height: size.height,
+                width: size.width,
+                child: Image.asset(
+                  'assets/images/bg.jpeg',
+                  fit: BoxFit.cover,
+                )),
+            Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: SafeArea(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height:50,
+                          width: 50,
+                          margin: const EdgeInsets.only(left: 10,top: 10),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                  const Color(0xFFfa709a),
+                                  Theme.of(context).primaryColor
+                                  // Color(0XFFfee140)
+
+                                ],
+                              ),
 
 
-         Flexible(child: ListView.builder(
-           itemCount: chatMessagesList.length,
-             reverse: true,
-             itemBuilder: (context,index){
-             return
-                 widget.username == chatMessagesList[index]['userId'] ?
-                     RightChatScreen(message:chatMessagesList[index]) :LeftChatScreen(message: chatMessagesList[index],);
+                              shape: BoxShape.circle
 
-         }),),
+                          ),
+                          child: IconButton(onPressed: (){
+                            Navigator.of(context).pop();
+                          }, icon: const Icon(Icons.arrow_back)),
+                        ),
+                        Container(
 
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: TypingIndicator(
-                showIndicator: _isSomeoneTyping,
-              ),
+
+                          padding: const EdgeInsets.symmetric(horizontal: 20,vertical:10 ),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                  const Color(0xFFfa709a),
+                                  Theme.of(context).primaryColor
+                                  // Color(0XFFfee140)
+
+                                ],
+                              ),
+
+
+                              shape: BoxShape.rectangle
+
+                          ),
+                          child:Text("Splash waterfalls"),
+                        ),
+
+
+                      ],
+                    ),
+                  ),
+                ),
+
+             Flexible(child: ListView.builder(
+               itemCount: chatMessagesList.length,
+                 reverse: true,
+                 itemBuilder: (context,index){
+                 return
+                     widget.username == chatMessagesList[index]['userId'] ?
+                         RightChatScreen(message:chatMessagesList[index]) :LeftChatScreen(message: chatMessagesList[index],);
+
+             }),),
+
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: TypingIndicator(
+                    showIndicator: _isSomeoneTyping,
+                  ),
+                ),
+
+                // Sticker
+
+                // Input content
+                buildInput(),
+              ],
             ),
-
-            // Sticker
-
-            // Input content
-            buildInput(),
           ],
         )
     );
@@ -518,8 +582,21 @@ class GroupChatScreenState extends State<GroupChatScreen> {
                 Container(
                   margin: new EdgeInsets.symmetric(horizontal: 8.0),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      shape: BoxShape.circle),
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          const Color(0xFFfa709a),
+                          Theme.of(context).primaryColor
+                          // Color(0XFFfee140)
+
+                        ],
+                      ),
+
+
+                      shape: BoxShape.circle
+
+                  ),
                   child: Center(
                     child: IconButton(
                       icon: new Icon(Icons.arrow_forward),
