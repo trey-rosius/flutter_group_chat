@@ -679,7 +679,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                                        )))),
                                      ),
                                      Container(
-                                       padding:EdgeInsets.only(right: 10,top: 5),
+                                       padding:const EdgeInsets.only(right: 10,top: 5),
                                          child: Icon(Icons.cancel_outlined,color:Theme.of(context).primaryColor,size: 20,)),
 
                                    ],
