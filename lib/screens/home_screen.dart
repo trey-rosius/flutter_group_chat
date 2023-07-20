@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:group_chat/repos/chat_repository.dart';
 import 'package:group_chat/screens/chat_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -244,6 +245,7 @@ class HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(builder: (context) {
                         return MultiProvider(
                             providers: [
+                              ChangeNotifierProvider(create: (_) => ChatRepository.instance()),
                               FutureProvider<UserItem?>.value(
                                   value: ProfileRepository.instance().getAUserProfile(
                             username), initialData: null,

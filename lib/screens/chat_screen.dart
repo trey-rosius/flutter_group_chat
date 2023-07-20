@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:group_chat/models/chat_item_model.dart';
 import 'package:group_chat/screens/left_chat_screen.dart';
 import 'package:group_chat/screens/right_chat_screen.dart';
 import 'package:group_chat/screens/typing_indicator.dart';
@@ -17,6 +18,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../models/user_item.dart';
+import '../repos/chat_repository.dart';
 import '../repos/profile_repository.dart';
 import '../utils/utils.dart';
 
@@ -48,7 +50,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
   final FocusNode focusNode = FocusNode();
 
   String? fileExtension;
-  List<Map> chatMessagesList = [];
+
 
   late final Stream<GraphQLResponse<String>> operation;
   late final Stream<GraphQLResponse<String>> sendMessageStream;
@@ -185,6 +187,8 @@ class GroupChatScreenState extends State<GroupChatScreen> {
   }
 
   Future<void> subscribeToSendMessage() async {
+
+    var chatRepo = context.read<ChatRepository>();
     const graphQLDocument = r'''
       subscription sendMessage {
       newMessage {
@@ -206,24 +210,24 @@ class GroupChatScreenState extends State<GroupChatScreen> {
 
     try {
       await for (var event in sendMessageStream) {
-        Map value = json.decode(event.data!);
+        ChatItemModel chatItemModel =  ChatItemModel.fromJson(json.decode(event.data!));
 
         if (kDebugMode) {
-          print("event data is ${value["newMessage"]}");
+          print("event message data is ${chatItemModel.newMessage!.messageText}");
         }
-        if (chatMessagesList.isNotEmpty) {
-          if (chatMessagesList[0]['id'] != value['newMessage']['id']) {
-            setState(() {
-              chatMessagesList.insert(0, value['newMessage']);
-            });
+        if (chatRepo.chatMessagesList.isNotEmpty) {
+          if (chatRepo.chatMessagesList[0].newMessage!.id != chatItemModel.newMessage!.id) {
+
+              chatRepo.chatMessage =  chatItemModel;
+
+
           }
         } else {
-          setState(() {
-            chatMessagesList.insert(0, value['newMessage']);
-          });
+          chatRepo.chatMessage = chatItemModel;
+
         }
         if (kDebugMode) {
-          print("all list messages are $chatMessagesList");
+        //  print("all list messages are $chatMessagesList");
           print('Subscription event data received: ${event.data}');
         }
       }
@@ -275,6 +279,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
   @override
   Widget build(BuildContext context) {
     var userProfileProvider = context.watch<UserItem?>();
+    var chatRepo = context.watch<ChatRepository>();
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -339,11 +344,11 @@ class GroupChatScreenState extends State<GroupChatScreen> {
 
             Flexible(
               child: ListView.builder(
-                  itemCount: chatMessagesList.length,
+                  itemCount: chatRepo.chatMessagesList.length,
                   reverse: true,
                   itemBuilder: (context, index) {
-                    return widget.username == chatMessagesList[index]['userId']
-                        ? RightChatScreen(message: chatMessagesList[index])
+                    return widget.username == chatRepo.chatMessagesList[index].newMessage!.userId
+                        ? RightChatScreen(message: chatRepo.chatMessagesList[index].newMessage!.messageText!)
                         :  userProfileProvider != null
                                   ? FutureProvider<String?>.value(
                                       value: Utils.getDownloadUrl(
@@ -353,7 +358,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
                                           (BuildContext context,
                                               String? profilePicUrl, child) {
                                         return LeftChatScreen(
-                                          message: chatMessagesList[index],
+                                          message: chatRepo.chatMessagesList[index].newMessage!.messageText!,
                                           profilePicUrl: profilePicUrl,
                                         );
                                       }))

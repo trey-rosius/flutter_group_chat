@@ -7,7 +7,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class RightChatScreen extends StatelessWidget {
   RightChatScreen( {required this.message});
-  final Map<dynamic,dynamic> message;
+  final String message;
 
 
   @override
@@ -31,13 +31,13 @@ class RightChatScreen extends StatelessWidget {
                   children: [
                     Container(
 padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),bottomLeft: Radius.circular(10))
                       ),
                       width: 200.0,
-                      child: Text(message['messageText'],style: TextStyle(color: Colors.black),),
+                      child: Text(message,style: TextStyle(color: Colors.black),),
                     ),
                   ],
                 ),

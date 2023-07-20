@@ -9,7 +9,7 @@ import '../utils/utils.dart';
 
 class LeftChatScreen extends StatefulWidget {
   LeftChatScreen({required this.message,required this.profilePicUrl});
-  final Map message;
+  final String message;
   final String? profilePicUrl;
 
   @override
@@ -84,7 +84,7 @@ class _LeftChatScreenState extends State<LeftChatScreen> {
                         borderRadius: const BorderRadius.only(topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),bottomRight: Radius.circular(10))
                       ),
-                      child:Text(widget.message['messageText'],style: TextStyle(color: Colors.black),)),
+                      child:Text(widget.message,style: TextStyle(color: Colors.black),)),
 
                   ],
                 ),
