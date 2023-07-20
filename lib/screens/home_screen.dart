@@ -6,6 +6,7 @@ import 'package:group_chat/screens/chat_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../models/group_model.dart';
+import '../models/user_item.dart';
 import '../models/user_profile_model.dart';
 import '../repos/group_repository.dart';
 import '../repos/profile_repository.dart';
@@ -238,28 +239,28 @@ class HomeScreenState extends State<HomeScreen> {
                   floatingActionButton: FloatingActionButton(
                     onPressed: () {
 
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                            return GroupChatScreen(
-                                   username,
-                                );
-                          }));
 
-
-                      /*
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return MultiProvider(
                             providers: [
-                              ChangeNotifierProvider(
-                                  create: (_) => GroupRepository.instance()),
+                              FutureProvider<UserItem?>.value(
+                                  value: ProfileRepository.instance().getAUserProfile(
+                            username), initialData: null,
+                              catchError: (context,error) => throw error!,),
+
                             ],
+
+                            child: GroupChatScreen(username));
+                            /*
                             child: CreateGroupScreen(
                               username: username,
                             ));
+
+                             */
                       }));
 
-                       */
+
                     },
                     child: const Icon(Icons.group_add),
                   ),

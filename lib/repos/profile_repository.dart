@@ -9,6 +9,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:aws_common/vm.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
+import '../models/user_item.dart';
 import '../models/user_profile_model.dart';
 import '../utils/shared_preferences.dart';
 import '../utils/utils.dart';
@@ -168,6 +169,39 @@ class ProfileRepository extends ChangeNotifier {
     super.dispose();
   }
 
+  Future<UserItem> getAUserProfile(String username) async{
+
+    String graphQLDocument =
+    '''query getUser(\$userId: String!) {
+  getUserAccount(userId: \$userId) {
+    email
+    id
+    profilePicKey
+    username
+  }
+}
+''';
+
+    var operation = Amplify.API.query(
+
+
+        request: GraphQLRequest<String>(document: graphQLDocument, apiName: "cdk-group_chat-api_AMAZON_COGNITO_USER_POOLS",
+          variables: {
+            "userId": username
+
+          },));
+
+
+
+    var response = await operation.response;
+
+    final responseJson = json.decode(response.data!);
+    if (kDebugMode) {
+      print("here$responseJson['getUserAccount");
+    }
+    return UserItem.fromJson(responseJson['getUserAccount']);
+
+  }
 
   Future<UserProfileModel> getUserProfiles() async{
 
