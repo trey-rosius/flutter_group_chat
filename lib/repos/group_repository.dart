@@ -9,7 +9,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:aws_common/vm.dart';
 
 
-import '../models/group_model.dart';
+import '../models/groups_created_by_user_model.dart';
 import '../models/user_item.dart';
 import '../models/user_profile_model.dart';
 
@@ -84,7 +84,7 @@ class GroupRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<GroupModel> getUserGroups(String userId) async {
+  Future<GroupCreatedByUserModel> getUserGroups(String userId) async {
     String graphQLDocument = '''query get(\$userId: String!) {
 
   getAllGroupsCreatedByUser(userId: \$userId) {
@@ -114,7 +114,7 @@ class GroupRepository extends ChangeNotifier {
     if (kDebugMode) {
       print("here$responseJson");
     }
-    return GroupModel.fromJson(responseJson);
+    return GroupCreatedByUserModel.fromJson(responseJson);
   }
 
   Future<bool> addUserToGroup(String username,String groupId) async {

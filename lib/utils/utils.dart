@@ -13,7 +13,7 @@ class Utils{
           accessLevel: StorageAccessLevel.guest,
           pluginOptions: S3GetUrlPluginOptions(
             validateObjectExistence: true,
-            expiresIn: Duration(days: 1),
+            expiresIn: Duration(days: 7),
           ),
         ),
       ).result;

@@ -6,7 +6,7 @@ import 'package:group_chat/repos/chat_repository.dart';
 import 'package:group_chat/screens/chat_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../models/group_model.dart';
+import '../models/groups_created_by_user_model.dart';
 import '../models/user_item.dart';
 import '../models/user_profile_model.dart';
 import '../repos/group_repository.dart';
@@ -99,7 +99,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 ),
-                                FutureProvider<GroupModel?>.value(
+                                FutureProvider<GroupCreatedByUserModel?>.value(
                                     value: GroupRepository.instance()
                                         .getUserGroups(username),
                                     initialData: null,
@@ -108,7 +108,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     },
                                     child: Consumer(builder:
                                         (BuildContext context,
-                                            GroupModel? value, Widget? child) {
+                                        GroupCreatedByUserModel? value, Widget? child) {
                                       return value == null
                                           ? const Center(
                                               child:
@@ -135,8 +135,8 @@ class HomeScreenState extends State<HomeScreen> {
                                                 ],
                                               ),
                                               itemCount: value
-                                                  .getAllGroupsCreatedByUser!
-                                                  .items!
+                                                  .groupItems!
+                                                  .groupItemList!
                                                   .length,
                                               itemBuilder:
                                                   (BuildContext context,
@@ -151,8 +151,8 @@ class HomeScreenState extends State<HomeScreen> {
                                                               String?>.value(
                                                           value: Utils.getDownloadUrl(
                                                               key: value
-                                                                  .getAllGroupsCreatedByUser!
-                                                                  .items![index]
+                                                                  .groupItems!
+                                                                  .groupItemList![index]
                                                                   .groupProfilePicKey!),
                                                           catchError:
                                                               (context, error) {
@@ -214,8 +214,8 @@ class HomeScreenState extends State<HomeScreen> {
                                                             ),
                                                             shape: BoxShape.rectangle),
                                                         child: Text(value
-                                                            .getAllGroupsCreatedByUser!
-                                                            .items![index]
+                                                            .groupItems!
+                                                            .groupItemList![index]
                                                             .name!),
                                                       ),
 
