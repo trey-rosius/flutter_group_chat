@@ -48,7 +48,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
 
 
 
-        widget.groupRepository.addUserToGroup(widget.userItem.id!, widget.groupId).then((value){
+        widget.groupRepository.addUserToGroup(widget.userItem.username!, widget.groupId).then((value){
           setState(() {
             widget.groupRepository.userProfile = widget.userItem;
             _isSelected = value;

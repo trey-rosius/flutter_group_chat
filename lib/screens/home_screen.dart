@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:group_chat/repos/chat_repository.dart';
 import 'package:group_chat/screens/chat_screen.dart';
@@ -8,12 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../models/groups_created_by_user_model.dart';
 import '../models/user_item.dart';
-import '../models/user_profile_model.dart';
 import '../repos/group_repository.dart';
 import '../repos/profile_repository.dart';
 import '../utils/shared_preferences.dart';
 import '../utils/utils.dart';
-import 'create_group_screen.dart';
 import 'login_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
