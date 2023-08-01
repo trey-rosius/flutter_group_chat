@@ -11,6 +11,7 @@ import '../repos/group_repository.dart';
 import '../repos/profile_repository.dart';
 import '../utils/shared_preferences.dart';
 import '../utils/utils.dart';
+import 'create_group_screen.dart';
 import 'login_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -111,121 +112,112 @@ class HomeScreenState extends State<HomeScreen> {
                                               child:
                                                   CircularProgressIndicator(),
                                             )
-                                          : Container(
-                                              child: Expanded(
-                                                  child: GridView.builder(
-                                              shrinkWrap: true,
-                                              gridDelegate:
-                                                  SliverWovenGridDelegate.count(
-                                                crossAxisCount: 2,
-                                                mainAxisSpacing: 8,
-                                                crossAxisSpacing: 8,
-                                                pattern: [
-                                                  const WovenGridTile(1),
-                                                  const WovenGridTile(
-                                                    5 / 7,
-                                                    crossAxisRatio: 0.9,
-                                                    alignment:
-                                                        AlignmentDirectional
-                                                            .centerEnd,
-                                                  ),
-                                                ],
-                                              ),
-                                              itemCount: value
-                                                  .groupItems!
-                                                  .groupItemList!
-                                                  .length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return Container(
-                                                  padding:
-                                                      const EdgeInsets.all(10),
-                                                  //color: Colors.white,
-                                                  child: Column(
-                                                    children: [
-                                                      FutureProvider<
+                                          : 
+                                          
+                                          Container(
+                                            height: 250,
+                                            child:  ListView.builder(
+                                                scrollDirection: Axis.horizontal,
+                                                  shrinkWrap: true,
+                                                
+                                                itemCount: value
+                                                    .groupItems!
+                                                    .groupItemList!
+                                                    .length,
+                                                
+                                                  itemBuilder: (context,index){
+                                                    return Container(
+
+                                                      decoration: BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            begin: Alignment.topRight,
+                                                            end: Alignment.bottomLeft,
+                                                            colors: [
+                                                              const Color(0xFFfa709a),
+                                                              Theme.of(context).primaryColor
+
+                                                            ],
+                                                          ),
+                                                          borderRadius: BorderRadius.circular(10)),
+                                                      margin: EdgeInsets.all(10),
+                                                      child: Column(
+                                                        children: [
+                                                          FutureProvider<
                                                               String?>.value(
-                                                          value: Utils.getDownloadUrl(
-                                                              key: value
-                                                                  .groupItems!
-                                                                  .groupItemList![index]
-                                                                  .groupProfilePicKey!),
-                                                          catchError:
-                                                              (context, error) {
-                                                            throw error!;
-                                                          },
-                                                          initialData: null,
-                                                          child: Consumer(
-                                                              builder: (_,
-                                                                  String?
+                                                              value: Utils.getDownloadUrl(
+                                                                  key: value
+                                                                      .groupItems!
+                                                                      .groupItemList![index]
+                                                                      .groupProfilePicKey!),
+                                                              catchError:
+                                                                  (context, error) {
+                                                                throw error!;
+                                                              },
+                                                              initialData: null,
+                                                              child: Consumer(
+                                                                  builder: (_,
+                                                                      String?
                                                                       groupProfilePicUrl,
-                                                                  child) {
-                                                            return ClipRRect(
-                                                              borderRadius: BorderRadius.circular(100),
-                                                              
-                                                              child: CachedNetworkImage(
-                                                                  width: 100,
-                                                                  height: 100.0,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                  imageUrl:
-                                                                      groupProfilePicUrl ??
-                                                                          "",
-                                                                  placeholder: (context,
-                                                                          url) =>
-                                                                       CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
-                                                                  errorWidget:
-                                                                      (context,
+                                                                      child) {
+                                                                    return ClipRRect(
+                                                                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
+
+                                                                      child: CachedNetworkImage(
+                                                                          height: 150,
+
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                          imageUrl:
+                                                                          groupProfilePicUrl ??
+                                                                              "",
+                                                                          placeholder: (context,
+                                                                              url) =>
+                                                                              CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
+                                                                          errorWidget:
+                                                                              (context,
                                                                               url,
                                                                               ex) =>
-                                                                          CircleAvatar(
-                                                                            backgroundColor: Theme.of(context)
-                                                                                .colorScheme
-                                                                                .secondary,
-                                                                            radius:
+                                                                              CircleAvatar(
+                                                                                backgroundColor: Theme.of(context)
+                                                                                    .colorScheme
+                                                                                    .secondary,
+                                                                                radius:
                                                                                 40.0,
-                                                                            child:
+                                                                                child:
                                                                                 const Icon(
-                                                                              Icons.account_circle,
-                                                                              color:
+                                                                                  Icons.account_circle,
+                                                                                  color:
                                                                                   Colors.white,
-                                                                              size:
+                                                                                  size:
                                                                                   40.0,
-                                                                            ),
-                                                                          )),
-                                                            );
-                                                          })),
-                                                      Container(
-                                                        margin:const EdgeInsets.only(top: 10),
-                                                        padding:const EdgeInsets.all(10),
-                                                        decoration: BoxDecoration(
-                                                            gradient: LinearGradient(
-                                                              begin: Alignment.topRight,
-                                                              end: Alignment.bottomLeft,
-                                                              colors: [
-                                                                const Color(0xFFfa709a),
-                                                                Theme.of(context).primaryColor
+                                                                                ),
+                                                                              )),
+                                                                    );
+                                                                  })),
+                                                          Container(
+                                                            margin:const EdgeInsets.only(top: 10),
+                                                            padding:const EdgeInsets.all(10),
 
-                                                              ],
-                                                            ),
-                                                            shape: BoxShape.rectangle),
-                                                        child: Text(value
-                                                            .groupItems!
-                                                            .groupItemList![index]
-                                                            .name!),
+                                                            child: Text(value
+                                                                .groupItems!
+                                                                .groupItemList![index]
+                                                                .name!),
+                                                          ),
+
+
+
+
+                                                        ],
                                                       ),
+                                                    );
+                                                
+                                              }),
+                                           
+                                          );
+                                      
+                                     
 
-
-
-
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            )
-
-                                                  ));
+                                                  
                                     }))
                               ],
                             ),
@@ -237,7 +229,26 @@ class HomeScreenState extends State<HomeScreen> {
                   floatingActionButton: FloatingActionButton(
                     onPressed: () {
 
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return MultiProvider(
+                                providers: [
+                                  ChangeNotifierProvider(create: (_) => GroupRepository.instance()),
 
+
+                                ],
+
+
+
+                            child: CreateGroupScreen(
+                              username: username,
+                            ));
+
+
+                          }));
+
+
+/*
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return MultiProvider(
@@ -251,14 +262,10 @@ class HomeScreenState extends State<HomeScreen> {
                             ],
 
                             child: GroupChatScreen(username));
-                            /*
-                            child: CreateGroupScreen(
-                              username: username,
-                            ));
 
-                             */
+
                       }));
-
+*/
 
                     },
                     child: const Icon(Icons.group_add),
