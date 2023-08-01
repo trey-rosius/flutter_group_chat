@@ -19,7 +19,7 @@ class LeftChatScreen extends StatefulWidget {
 class _LeftChatScreenState extends State<LeftChatScreen> {
      @override
   Widget build(BuildContext context) {
-       var uuid =Uuid();
+       var uuid =const Uuid();
        var id = uuid.v1();
     return
       InkWell(

@@ -224,7 +224,7 @@ class _AddUsersToGroupScreenState extends State<AddUsersToGroupScreen> {
                                  ],
                                ),
                                 Container(
-                                  padding:EdgeInsets.only(right: 10),
+                                  padding:const EdgeInsets.only(right: 10),
                                   child: CustomCheckbox(
                                        groupId: widget.groupId,
                                        userItem: value.getAllUserAccounts!.items![index],
