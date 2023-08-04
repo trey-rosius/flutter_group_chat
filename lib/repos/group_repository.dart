@@ -4,6 +4,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:group_chat/models/get_all_users_per_group_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:aws_common/vm.dart';
@@ -83,6 +84,45 @@ class GroupRepository extends ChangeNotifier {
     _loading = value;
     notifyListeners();
   }
+  Future<GetAllUsersPerGroupModel> getAllUsersPerGroup(String groupId,String? nextToken,int limit) async {
+    String graphQLDocument = '''query getAllUsersPerGroup(\$groupId: String!,\$nextToken: String,\$limit: Int) {
+  getAllUsersPerGroup(groupId: \$groupId, limit: \$limit, nextToken: \$nextToken) {
+    nextToken
+    items {
+      user {
+        createdOn
+        id
+        username
+        profilePicKey
+      }
+      createdOn
+      groupId
+    }
+  }
+}
+''';
+
+
+    var operation = Amplify.API.query(
+        request: GraphQLRequest<String>(
+          document: graphQLDocument,
+          apiName: "cdk-group_chat-api_AMAZON_COGNITO_USER_POOLS",
+          variables: {
+            "groupId": groupId,
+            "limit":limit,
+            "nextToken":nextToken
+          },
+        ));
+
+    var response = await operation.response;
+
+    final responseJson = json.decode(response.data!);
+    if (kDebugMode) {
+      print("here$responseJson");
+    }
+    return GetAllUsersPerGroupModel.fromJson(responseJson);
+  }
+
 
   Future<GroupCreatedByUserModel> getUserGroups(String userId) async {
     String graphQLDocument = '''query get(\$userId: String!) {
