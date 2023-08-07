@@ -124,7 +124,7 @@ class GroupRepository extends ChangeNotifier {
   }
 
 
-  Future<GroupCreatedByUserModel> getUserGroups(String userId) async {
+  Future<GroupCreatedByUserModel> getGroupsCreatedByUser(String userId) async {
     String graphQLDocument = '''query get(\$userId: String!) {
 
   getAllGroupsCreatedByUser(userId: \$userId) {
