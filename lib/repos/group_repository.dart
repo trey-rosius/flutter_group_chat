@@ -5,6 +5,7 @@ import 'package:amplify_api/amplify_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:group_chat/models/get_all_users_per_group_model.dart';
+import 'package:group_chat/models/groups_user_belong_to_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:aws_common/vm.dart';
@@ -12,7 +13,6 @@ import 'package:aws_common/vm.dart';
 
 import '../models/groups_created_by_user_model.dart';
 import '../models/user_item.dart';
-import '../models/user_profile_model.dart';
 
 import '../utils/utils.dart';
 
@@ -122,6 +122,45 @@ class GroupRepository extends ChangeNotifier {
     }
     return GetAllUsersPerGroupModel.fromJson(responseJson);
   }
+  Future<GroupsUserBelongToModel> getGroupsUserBelongTo(String userId,String? nextToken,int limit) async {
+    String graphQLDocument = '''query getGroupsUserBelongsTo(\$userId:String!,\$nextToken: String,\$limit: Int) {
+  getGroupsUserBelongsTo(userId:\$userId, limit: \$limit,nextToken:\$nextToken) {
+    nextToken
+    items {
+      createdOn
+      group {
+        createdOn
+        description
+        groupProfilePicKey
+        id
+        name
+        userId
+      }
+      userId
+    }
+  }
+}
+''';
+
+    var operation = Amplify.API.query(
+        request: GraphQLRequest<String>(
+          document: graphQLDocument,
+          apiName: "cdk-group_chat-api_AMAZON_COGNITO_USER_POOLS",
+          variables: {
+            "userId": userId,
+            "limit":limit,
+            "nextToken":nextToken
+          },
+        ));
+
+    var response = await operation.response;
+
+    final responseJson = json.decode(response.data!);
+    if (kDebugMode) {
+      print("here$responseJson");
+    }
+    return GroupsUserBelongToModel.fromJson(responseJson);
+  }
 
 
   Future<GroupCreatedByUserModel> getGroupsCreatedByUser(String userId) async {
@@ -145,6 +184,7 @@ class GroupRepository extends ChangeNotifier {
       apiName: "cdk-group_chat-api_AMAZON_COGNITO_USER_POOLS",
       variables: {
         "userId": userId,
+
       },
     ));
 

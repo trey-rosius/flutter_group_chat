@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_chat/models/groups_user_belong_to_model.dart';
 import '../models/groups_created_by_user_model.dart';
 import '../models/get_all_users_per_group_model.dart';
 import '../repos/group_repository.dart';
@@ -6,21 +7,21 @@ import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../utils/utils.dart';
 
-class GroupsCreatedByUserScreen extends StatelessWidget {
-  const GroupsCreatedByUserScreen(this.username, this.nextToken);
+class GroupsUserBelongsToScreen extends StatelessWidget {
+  const GroupsUserBelongsToScreen(this.username, this.nextToken);
   final String username;
   final String? nextToken;
 
   @override
   Widget build(BuildContext context) {
-    return FutureProvider<GroupCreatedByUserModel?>.value(
-        value: GroupRepository.instance().getGroupsCreatedByUser(username),
+    return FutureProvider<GroupsUserBelongToModel?>.value(
+        value: GroupRepository.instance().getGroupsUserBelongTo(username,nextToken,10),
         initialData: null,
         catchError: (context, error) {
           throw error!;
         },
         child: Consumer(builder: (BuildContext context,
-            GroupCreatedByUserModel? value, Widget? child) {
+            GroupsUserBelongToModel? value, Widget? child) {
           return value == null
               ? const Center(
                   child: CircularProgressIndicator(),
@@ -30,7 +31,7 @@ class GroupsCreatedByUserScreen extends StatelessWidget {
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       shrinkWrap: true,
-                      itemCount: value.groupItems!.groupItemList!.length,
+                      itemCount: value.getGroupsUserBelongsTo!.items!.length,
                       itemBuilder: (context, index) {
                         return Container(
                           width: 140,
@@ -52,10 +53,10 @@ class GroupsCreatedByUserScreen extends StatelessWidget {
                             children: [
                               FutureProvider<String?>.value(
                                   value: Utils.getDownloadUrl(
-                                      key: value
-                                          .groupItems!
-                                          .groupItemList![index]
-                                          .groupProfilePicKey!),
+                                      key: value.getGroupsUserBelongsTo!
+
+                                          .items![index]
+                                          .groupItem!.groupProfilePicKey!),
                                   catchError: (context, error) {
                                     throw error!;
                                   },
@@ -97,15 +98,20 @@ class GroupsCreatedByUserScreen extends StatelessWidget {
                                 padding: const EdgeInsets.only(
                                     top: 10, left: 10, right: 10),
                                 child: Text(
-                                  value.groupItems!.groupItemList![index].name!,
+                                  value.getGroupsUserBelongsTo!
+
+                                      .items![index]
+                                      .groupItem!.name!,
                                  ),
 
                               ),
                               FutureProvider<GetAllUsersPerGroupModel?>.value(
                                   value: GroupRepository.instance()
                                       .getAllUsersPerGroup(
-                                          value.groupItems!
-                                              .groupItemList![index].id!,
+                                          value.getGroupsUserBelongsTo!
+
+                                              .items![index]
+                                              .groupItem!.id!,
                                           nextToken,
                                           10),
                                   initialData: null,

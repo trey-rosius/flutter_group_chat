@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:group_chat/screens/groups_user_belongs_to_screen.dart';
 import 'package:provider/provider.dart';
 import '../repos/group_repository.dart';
 import '../utils/shared_preferences.dart';
@@ -92,8 +93,41 @@ class HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [
+                                    const Color(0xFFfa709a),
+                                    Theme.of(context).primaryColor
+                                    // Color(0XFFfee140)
+                                  ],
+                                ),
+                                shape: BoxShape.rectangle),
+                            child: const Text("My Groups"),
+                          ),
                           //put groups created by user here
-                                GroupsCreatedByUserScreen(username,nextToken)
+                                GroupsCreatedByUserScreen(username,nextToken),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        colors: [
+                                          const Color(0xFFfa709a),
+                                          Theme.of(context).primaryColor
+                                          // Color(0XFFfee140)
+                                        ],
+                                      ),
+                                      shape: BoxShape.rectangle),
+                                  child: const Text("Added Groups"),
+                                ),
+                                GroupsUserBelongsToScreen(username,nextToken),
                               ],
                             ),
                           )),
