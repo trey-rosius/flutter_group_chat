@@ -1,16 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:group_chat/repos/group_repository.dart';
-import 'package:group_chat/screens/add_users_to_group_screen.dart';
-import 'package:group_chat/screens/create_group_screen.dart';
-import 'package:group_chat/screens/create_user_account.dart';
-import 'package:group_chat/repos/profile_repository.dart';
-import 'package:group_chat/screens/home_screen.dart';
-import 'package:group_chat/screens/login_screen.dart';
-import 'package:provider/provider.dart';
+
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:group_chat/screens/home_screen.dart';
 import 'amplifyconfiguration.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 void main() {
@@ -95,14 +89,7 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xFFd33f2b))
       ),
      home: loadedAmplify ?   HomeScreen() : const Center(child: CircularProgressIndicator(),),
-   //  home: loadedAmplify ?   AddUsersToGroupScreen() : const Center(child: CircularProgressIndicator(),),
-     // home: CreateUserAccountScreen(email: 'email',),
-/*
-     home: ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),
-         child:CreateUserAccountScreen(email: 'email',)),
 
-
- */
 
     );
 

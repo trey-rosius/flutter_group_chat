@@ -1,12 +1,10 @@
 {
-  "resourceName": "s34dd4297b",
-  "policyUUID": "4dd4297b",
-  "bucketName": "groupchatfbd9857d8c7440a9a3f04112e1574e80",
+  "resourceName": "s3938b5b2c",
+  "policyUUID": "938b5b2c",
+  "bucketName": "groupchata56f028a557141d999f41bd376ca67a2",
   "storageAccess": "authAndGuest",
   "guestAccess": [
-    "CREATE_AND_UPDATE",
-    "READ",
-    "DELETE"
+    "READ"
   ],
   "authAccess": [
     "CREATE_AND_UPDATE",

@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "groupchat283b5733_identitypool_283b5733",
+    "identityPoolName": "groupchata801e84f_identitypool_a801e84f",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "groupc283b5733",
-    "userPoolName": "groupchat283b5733_userpool_283b5733",
+    "resourceNameTruncated": "groupca801e84f",
+    "userPoolName": "groupchata801e84f_userpool_a801e84f",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,14 +31,14 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "groupc283b5733_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "groupca801e84f_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "283b5733",
-    "resourceName": "groupchat283b5733",
+    "sharedId": "a801e84f",
+    "resourceName": "groupchata801e84f",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "defaultSocial",
     "hostedUI": true,
-    "hostedUIDomainName": "groupchat283b5733-283b5733",
+    "hostedUIDomainName": "groupchata801e84f-a801e84f",
     "authProvidersUserPool": [
       "Google"
     ],

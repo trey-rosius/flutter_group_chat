@@ -1,21 +1,21 @@
 export type AmplifyDependentResourcesAttributes = {
-    "auth": {
-        "groupchat283b5733": {
-            "IdentityPoolId": "string",
-            "IdentityPoolName": "string",
-            "HostedUIDomain": "string",
-            "OAuthMetadata": "string",
-            "UserPoolId": "string",
-            "UserPoolArn": "string",
-            "UserPoolName": "string",
-            "AppClientIDWeb": "string",
-            "AppClientID": "string"
-        }
-    },
-    "storage": {
-        "s34dd4297b": {
-            "BucketName": "string",
-            "Region": "string"
-        }
+  "auth": {
+    "groupchata801e84f": {
+      "AppClientID": "string",
+      "AppClientIDWeb": "string",
+      "HostedUIDomain": "string",
+      "IdentityPoolId": "string",
+      "IdentityPoolName": "string",
+      "OAuthMetadata": "string",
+      "UserPoolArn": "string",
+      "UserPoolId": "string",
+      "UserPoolName": "string"
     }
+  },
+  "storage": {
+    "s3938b5b2c": {
+      "BucketName": "string",
+      "Region": "string"
+    }
+  }
 }

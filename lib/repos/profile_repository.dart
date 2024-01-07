@@ -169,7 +169,7 @@ class ProfileRepository extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<UserItem> getAUserProfile(String username) async{
+  Future<UserItem> getUserProfile(String username) async{
 
     String graphQLDocument =
     '''query getUser(\$userId: String!) {
@@ -273,7 +273,9 @@ class ProfileRepository extends ChangeNotifier {
       Amplify.Auth.signOut();
       return logout = true;
     } on AuthException catch (e) {
-      print(e.message);
+      if (kDebugMode) {
+        print(e.message);
+      }
       return logout = false;
     }
   }

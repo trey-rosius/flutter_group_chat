@@ -60,7 +60,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
     super.initState();
     myFocusNode = FocusNode();
 
-    listScrollController = new ScrollController();
+    listScrollController = ScrollController();
     isLoading = false;
 
     subscribeToTyping();
@@ -72,6 +72,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
     // Clean up the focus node when the Form is disposed.
     myFocusNode!.dispose();
     textEditingController.dispose();
+
 
     super.dispose();
   }
@@ -189,7 +190,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
   Future<void> subscribeToSendMessage() async {
 
     var chatRepo = context.read<ChatRepository>();
-    const graphQLDocument = r'''
+    const graphQLDocument = '''
       subscription sendMessage {
       newMessage {
     groupId
@@ -239,7 +240,7 @@ class GroupChatScreenState extends State<GroupChatScreen> {
   }
 
   Future<void> subscribeToTyping() async {
-    const graphQLDocument = r'''
+    const graphQLDocument = '''
       subscription typingIndicator {
         typingIndicator {
     groupId
